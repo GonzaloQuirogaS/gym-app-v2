@@ -21,6 +21,7 @@
         <module>microservice-eureka</module>
         <module>microservice-config</module>
         <module>microservice-client</module>
+        <module>microservice-activity</module>
     </modules>
 
     <properties>
