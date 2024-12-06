@@ -1,5 +1,6 @@
 package com.microservice.activity.client;
 
+import com.microservice.activity.presentation.dto.client.ClientDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,6 @@ import java.util.List;
 public interface Client {
 
     @GetMapping("/search-by-activity/{id}")
-    List<?> findAllClientsByActivity(@PathVariable Long id);
+    List<ClientDto> findAllClientsByActivity(@PathVariable Long id);
 
 }
