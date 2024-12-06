@@ -1,7 +1,7 @@
 package com.microservice.activity.service.interfaces;
 
-import com.microservice.activity.presentation.dto.ActivityDto;
-import com.microservice.activity.presentation.dto.ActivityRequestDto;
+import com.microservice.activity.presentation.dto.activity.ActivityDto;
+import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 
 import java.util.List;
 

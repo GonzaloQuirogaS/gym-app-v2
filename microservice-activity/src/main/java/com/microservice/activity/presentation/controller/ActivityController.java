@@ -1,7 +1,7 @@
 package com.microservice.activity.presentation.controller;
 
-import com.microservice.activity.presentation.dto.ActivityDto;
-import com.microservice.activity.presentation.dto.ActivityRequestDto;
+import com.microservice.activity.presentation.dto.activity.ActivityDto;
+import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 import com.microservice.activity.service.interfaces.IActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

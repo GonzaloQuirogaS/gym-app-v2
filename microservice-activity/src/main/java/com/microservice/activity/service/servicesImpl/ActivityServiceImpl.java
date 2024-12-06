@@ -2,8 +2,8 @@ package com.microservice.activity.service.servicesImpl;
 
 import com.microservice.activity.persistence.entity.Activity;
 import com.microservice.activity.persistence.repository.ActivityRepository;
-import com.microservice.activity.presentation.dto.ActivityDto;
-import com.microservice.activity.presentation.dto.ActivityRequestDto;
+import com.microservice.activity.presentation.dto.activity.ActivityDto;
+import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 import com.microservice.activity.service.interfaces.IActivityService;
 import com.microservice.activity.util.mapper.Mapper;
 import lombok.RequiredArgsConstructor;

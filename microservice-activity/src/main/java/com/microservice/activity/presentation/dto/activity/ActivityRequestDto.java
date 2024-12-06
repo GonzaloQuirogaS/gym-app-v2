@@ -1,4 +1,5 @@
-package com.microservice.activity.presentation.dto;
+package com.microservice.activity.presentation.dto.activity;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ActivityDto {
-
-    private Long id;
+public class ActivityRequestDto {
     private String name;
     private Integer price;
 }

@@ -1,7 +1,7 @@
 package com.microservice.activity.util.mapper;
 
 import com.microservice.activity.persistence.entity.Activity;
-import com.microservice.activity.presentation.dto.ActivityDto;
+import com.microservice.activity.presentation.dto.activity.ActivityDto;
 
 public class Mapper {
 
