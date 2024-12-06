@@ -78,6 +78,11 @@ public class ClientController {
                 .status(HttpStatus.OK)
                 .body("Eliminado con exito!");
     }
+
+    @GetMapping("/search-by-activity/{id}")
+    public ResponseEntity<?> findByIdActivity(@PathVariable Long id) {
+        return ResponseEntity.ok(clientService.findByIdActivity(id));
+    }
 }
 
 
