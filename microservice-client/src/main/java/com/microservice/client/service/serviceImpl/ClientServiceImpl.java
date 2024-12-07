@@ -44,9 +44,10 @@ public class ClientServiceImpl implements IClientService {
         Client client = clientRepository.findById(id).orElseThrow();
         client.setName(clientRequestDto.getName());
         client.setSurname(clientRequestDto.getSurname());
+        client.setAge(clientRequestDto.getAge());
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
-
+        client.setActivityId(null);
         clientRepository.save(client);
 
         return mapper.mapToClientDto(client);

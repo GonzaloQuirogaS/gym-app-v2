@@ -23,19 +23,11 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(min = 3)
     private String name;
-    @NotBlank
-    @Size(min = 3)
     private String surname;
-    @NotNull
     private Integer age;
-    @NotBlank
     private String email;
-    @NotNull
     private Long phone;
-    @NotNull
     private LocalDateTime registerDate = LocalDateTime.now();
 
     @Column(name = "activity_id")

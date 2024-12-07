@@ -34,7 +34,7 @@ public class ClientController {
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("No fue posible crear el ciente, verifique sus datos!");
+                    .body(e);
         }
     }
 
