@@ -1,9 +1,12 @@
 package com.microservice.activity.service.servicesImpl;
 
+import com.microservice.activity.client.Client;
 import com.microservice.activity.persistence.entity.Activity;
 import com.microservice.activity.persistence.repository.ActivityRepository;
 import com.microservice.activity.presentation.dto.activity.ActivityDto;
 import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
+import com.microservice.activity.presentation.dto.client.ClientDto;
+import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
 import com.microservice.activity.service.interfaces.IActivityService;
 import com.microservice.activity.util.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ public class ActivityServiceImpl implements IActivityService {
 
 
     private final ActivityRepository activityRepository;
+    private final Client client;
     private final Mapper mapper;
 
     @Override
@@ -51,5 +55,20 @@ public class ActivityServiceImpl implements IActivityService {
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         return mapper.mapToActivityDto(activity);
+    }
+
+    @Override
+    public ActivityByClientResponse findClientsByIdActivity(Long id) {
+
+        Activity activity = activityRepository.findById(id).orElseThrow();
+
+        List<ClientDto> clientDtoList = client.findAllClientsByActivity(id);
+
+        return ActivityByClientResponse.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .price(activity.getPrice())
+                .clientDtoList(clientDtoList)
+                .build();
     }
 }
