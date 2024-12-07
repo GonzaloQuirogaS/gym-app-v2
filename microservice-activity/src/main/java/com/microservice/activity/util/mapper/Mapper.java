@@ -2,7 +2,9 @@ package com.microservice.activity.util.mapper;
 
 import com.microservice.activity.persistence.entity.Activity;
 import com.microservice.activity.presentation.dto.activity.ActivityDto;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Mapper {
 
     public ActivityDto mapToActivityDto(Activity activity) {
