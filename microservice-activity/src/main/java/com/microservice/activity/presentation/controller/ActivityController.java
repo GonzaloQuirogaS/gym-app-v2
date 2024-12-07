@@ -73,4 +73,9 @@ public class ActivityController {
                     .body("No fue posible eliminar la actividad, verifique los datos!");
         }
     }
+
+    @GetMapping("/search-client/{id}")
+    public ResponseEntity<?> findClientsByIdActivity(@PathVariable Long id) {
+        return ResponseEntity.ok(activityService.findClientsByIdActivity(id));
+    }
 }
