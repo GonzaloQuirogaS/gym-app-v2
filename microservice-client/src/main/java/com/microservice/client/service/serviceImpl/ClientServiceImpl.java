@@ -31,6 +31,7 @@ public class ClientServiceImpl implements IClientService {
         Client client = new Client();
         client.setName(clientRequestDto.getName());
         client.setSurname(clientRequestDto.getSurname());
+        client.setAge(clientRequestDto.getAge());
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
 
