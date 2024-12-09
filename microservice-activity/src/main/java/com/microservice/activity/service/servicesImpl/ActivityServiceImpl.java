@@ -33,8 +33,9 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public ActivityDto save(ActivityRequestDto activityRequestDto) {
         Activity activity = new Activity();
-        activity.setName(activity.getName());
-        activity.setPrice(activity.getPrice());
+        activity.setName(activityRequestDto.getName());
+        activity.setPrice(activityRequestDto.getPrice());
+        activityRepository.save(activity);
         return mapper.mapToActivityDto(activity);
     }
 
@@ -54,6 +55,7 @@ public class ActivityServiceImpl implements IActivityService {
         Activity activity = activityRepository.findById(id).orElseThrow();
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
+        activityRepository.save(activity);
         return mapper.mapToActivityDto(activity);
     }
 

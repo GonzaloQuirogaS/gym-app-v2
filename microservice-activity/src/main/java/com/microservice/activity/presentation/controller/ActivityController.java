@@ -19,15 +19,13 @@ public class ActivityController {
 
     @GetMapping
     private ResponseEntity<List<ActivityDto>> findAll() {
-        List<ActivityDto> activities = activityService.findAll();
-        return ResponseEntity.ok(activities);
+        return ResponseEntity.ok(activityService.findAll());
     }
 
     @GetMapping("/{id}")
     ResponseEntity<?> findDisciplineById(@PathVariable Long id) {
         try {
-            ActivityDto activityDto = activityService.findById(id);
-            return ResponseEntity.ok(activityDto);
+            return ResponseEntity.ok(activityService.findById(id));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -38,22 +36,20 @@ public class ActivityController {
     @PutMapping("/update/{id}")
     private ResponseEntity<?> update(@PathVariable Long id, @RequestBody ActivityRequestDto activityRequestDto) {
         try {
-            ActivityDto activityDto = activityService.update(id, activityRequestDto);
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(activityDto);
+                    .body(activityService.update(id, activityRequestDto));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body("Error al actualizar la actividad!");
+                    .body(e);
         }
     }
 
     @PostMapping("/save")
     private ResponseEntity<?> save(@RequestBody ActivityRequestDto activityRequestDto) {
         try {
-            ActivityDto activityDto = activityService.save(activityRequestDto);
-            return ResponseEntity.ok(activityDto);
+            return ResponseEntity.ok(activityService.save(activityRequestDto));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
