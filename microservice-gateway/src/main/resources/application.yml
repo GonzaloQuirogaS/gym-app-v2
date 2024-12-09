@@ -20,4 +20,4 @@ spring:
         - id: activities
           uri: http://localhost:9090
           predicates:
-            - Path=/api/v2/activities**
+            - Path=/api/v2/activities/**
