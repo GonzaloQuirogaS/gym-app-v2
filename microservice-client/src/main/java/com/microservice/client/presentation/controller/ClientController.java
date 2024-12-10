@@ -83,6 +83,11 @@ public class ClientController {
     public ResponseEntity<?> findByIdActivity(@PathVariable Long id) {
         return ResponseEntity.ok(clientService.findByIdActivity(id));
     }
+
+    @GetMapping("/set-activity/client/{idClient}/activity/{idActivity}")
+    public ResponseEntity<ClientDto> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
+        return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
+    }
 }
 
 

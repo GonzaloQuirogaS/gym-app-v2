@@ -70,4 +70,12 @@ public class ClientServiceImpl implements IClientService {
         List<Client> clients = clientRepository.findAllByActivityId(id);
         return clients.stream().map(mapper::mapToClientDto).collect(Collectors.toList());
     }
+
+    @Override
+    public ClientDto setActivity(Long idClient, Long idActivity) {
+        Client client = clientRepository.findById(idClient).orElseThrow();
+        client.setActivityId(idActivity);
+        clientRepository.save(client);
+        return mapper.mapToClientDto(client);
+    }
 }

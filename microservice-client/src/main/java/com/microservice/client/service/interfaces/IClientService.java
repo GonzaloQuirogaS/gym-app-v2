@@ -19,4 +19,5 @@ public interface IClientService {
 
     List<ClientDto> findByIdActivity(Long id);
 
+    ClientDto setActivity(Long idClient, Long idActivity);
 }
