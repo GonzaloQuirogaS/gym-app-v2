@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v2/activities")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ActivityController {
 
     private final IActivityService activityService;
