@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/clients")
+@CrossOrigin("*")
 public class ClientController {
 
     private final IClientService clientService;

@@ -36,3 +36,5 @@ springdoc:
         name: API Gateway Service
       - url: /api/v2/activities
         name: Activity Service
+      - url: /api/v2/clients
+        name: Client Service
