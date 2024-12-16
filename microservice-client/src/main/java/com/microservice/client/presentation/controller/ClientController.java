@@ -3,6 +3,8 @@ package com.microservice.client.presentation.controller;
 import com.microservice.client.presentation.dto.ClientDto;
 import com.microservice.client.presentation.dto.ClientRequestDto;
 import com.microservice.client.service.interfaces.IClientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,18 @@ public class ClientController {
 
     private final IClientService clientService;
 
+    @Tag(name = "GET", description = "Get methods")
+    @Operation(summary = "Get all clients",
+            description = "Get all clients")
     @GetMapping
     public ResponseEntity<List<ClientDto>> findAll() {
         List<ClientDto> clients = clientService.findAll();
         return ResponseEntity.ok(clients);
     }
 
+    @Tag(name = "POST", description = "Post Methods")
+    @Operation(summary = "Save client",
+            description = "Save client")
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody ClientRequestDto clientRequestDto) {
         try {
@@ -39,6 +47,9 @@ public class ClientController {
         }
     }
 
+    @Tag(name = "GET")
+    @Operation(summary = "Get client by ID",
+            description = "Get client by ID")
     @GetMapping("/{id}")
     public ResponseEntity<?> findClientById(@PathVariable Long id) {
         try {
@@ -53,6 +64,8 @@ public class ClientController {
         }
     }
 
+    @Tag(name = "PUT")
+    @Operation(summary = "Update client", description = "Update client")
     @PutMapping("/update/{id}")
     private ResponseEntity<?> update(@PathVariable Long id, @RequestBody ClientRequestDto clientRequestDto) {
         try {
@@ -65,7 +78,9 @@ public class ClientController {
         }
     }
 
-
+    @Tag(name = "DELETE")
+    @Operation(summary = "Delete client by ID",
+            description = "Delete client by ID")
     @DeleteMapping("/delete/{id}")
     private ResponseEntity<?> delete(@PathVariable Long id) {
         try {
@@ -80,11 +95,23 @@ public class ClientController {
                 .body("Eliminado con exito!");
     }
 
+    @Tag(name = "GET")
+    @Operation(summary = "Get clients by activity ID",
+            description = "Get clients by activity ID")
     @GetMapping("/search-by-activity/{id}")
     public ResponseEntity<?> findByIdActivity(@PathVariable Long id) {
-        return ResponseEntity.ok(clientService.findByIdActivity(id));
+        try {
+            return ResponseEntity.ok(clientService.findByIdActivity(id));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("El id dado no corresponde a ninguna actividad!");
+        }
     }
 
+    @Tag(name = "GET")
+    @Operation(summary = "Set activity to clients by ID",
+            description = "Set activity to clients by ID")
     @GetMapping("/set-activity/client/{idClient}/activity/{idActivity}")
     public ResponseEntity<ClientDto> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
         return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
