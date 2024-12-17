@@ -109,10 +109,10 @@ public class ClientController {
         }
     }
 
-    @Tag(name = "GET")
+    @Tag(name = "POST")
     @Operation(summary = "Set activity to clients by ID",
             description = "Set activity to clients by ID")
-    @GetMapping("/set-activity/client/{idClient}/activity/{idActivity}")
+    @PostMapping("/set-activity/client/{idClient}/activity/{idActivity}")
     public ResponseEntity<?> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
         try {
             return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
