@@ -2,6 +2,7 @@ package com.microservice.client.service.interfaces;
 
 import com.microservice.client.presentation.dto.ClientDto;
 import com.microservice.client.presentation.dto.ClientRequestDto;
+
 import java.util.List;
 
 public interface IClientService {
@@ -19,4 +20,6 @@ public interface IClientService {
     List<ClientDto> findByIdActivity(Long id);
 
     ClientDto setActivity(Long idClient, Long idActivity);
+
+    ClientDto deleteActivity(Long idClient, Long idActivity);
 }

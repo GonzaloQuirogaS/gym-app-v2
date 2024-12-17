@@ -122,6 +122,20 @@ public class ClientController {
                     .body("Los ID dados no corresponde a ninguna actividad o cliente");
         }
     }
+
+    @Tag(name = "DELETE")
+    @Operation(summary = "Delete clients activity",
+            description = "Delete clients activity")
+    @DeleteMapping("/delete-activity/client/{idClient}/activity/{idActivity}")
+    public ResponseEntity<?> deleteActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
+        try {
+            return ResponseEntity.ok(clientService.deleteActivity(idClient, idActivity));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Los ID dados no corresponde a ninguna actividad o cliente");
+        }
+    }
 }
 
 

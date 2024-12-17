@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.management.RuntimeErrorException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,11 +78,26 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public ClientDto setActivity(Long idClient, Long idActivity) {
         ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
-        if (activityResponseDto== null){
+        if (activityResponseDto == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
         }
         Client client = clientRepository.findById(idClient).orElseThrow();
         client.setActivityId(idActivity);
+        clientRepository.save(client);
+        return mapper.mapToClientDto(client);
+    }
+
+    @Override
+    public ClientDto deleteActivity(Long idClient, Long idActivity) {
+        ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
+        if (activityResponseDto == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
+        }
+        Client client = clientRepository.findById(idClient).orElseThrow();
+        if (client.getActivityId() == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
+        }
+        client.setActivityId(null);
         clientRepository.save(client);
         return mapper.mapToClientDto(client);
     }
