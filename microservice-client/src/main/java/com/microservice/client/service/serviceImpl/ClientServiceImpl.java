@@ -1,14 +1,19 @@
 package com.microservice.client.service.serviceImpl;
 
+import com.microservice.client.client.FeingClient;
 import com.microservice.client.persistence.entity.Client;
 import com.microservice.client.persistence.repository.ClientRepository;
 import com.microservice.client.presentation.dto.ClientDto;
 import com.microservice.client.presentation.dto.ClientRequestDto;
+import com.microservice.client.presentation.dto.activity.ActivityResponseDto;
 import com.microservice.client.service.interfaces.IClientService;
 import com.microservice.client.util.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.management.RuntimeErrorException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +22,7 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements IClientService {
 
     private final ClientRepository clientRepository;
-
+    private final FeingClient feingClient;
     private final Mapper mapper;
 
     @Override
@@ -73,6 +78,10 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto setActivity(Long idClient, Long idActivity) {
+        ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
+        if (activityResponseDto== null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
+        }
         Client client = clientRepository.findById(idClient).orElseThrow();
         client.setActivityId(idActivity);
         clientRepository.save(client);

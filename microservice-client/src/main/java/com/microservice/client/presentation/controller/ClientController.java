@@ -113,8 +113,14 @@ public class ClientController {
     @Operation(summary = "Set activity to clients by ID",
             description = "Set activity to clients by ID")
     @GetMapping("/set-activity/client/{idClient}/activity/{idActivity}")
-    public ResponseEntity<ClientDto> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
-        return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
+    public ResponseEntity<?> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
+        try {
+            return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Los ID dados no corresponde a ninguna actividad o cliente");
+        }
     }
 }
 
