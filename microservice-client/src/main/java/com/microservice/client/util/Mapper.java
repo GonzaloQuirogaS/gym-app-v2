@@ -1,7 +1,7 @@
 package com.microservice.client.util;
 
 import com.microservice.client.persistence.entity.Client;
-import com.microservice.client.presentation.dto.ClientDto;
+import com.microservice.client.presentation.dto.client.ClientDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,5 +17,8 @@ public class Mapper {
         clientDto.setPhone(client.getPhone());
         clientDto.setRegisterDate(client.getRegisterDate());
         clientDto.setEmail(client.getEmail());
+        clientDto.setActivityRegisterDate(client.getActivityRegisterDate());
+        clientDto.setActivityExpireDate(client.getActivityExpireDate());
         return clientDto;
-    }}
+    }
+}

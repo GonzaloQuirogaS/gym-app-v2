@@ -3,8 +3,8 @@ package com.microservice.client.service.serviceImpl;
 import com.microservice.client.client.FeingClient;
 import com.microservice.client.persistence.entity.Client;
 import com.microservice.client.persistence.repository.ClientRepository;
-import com.microservice.client.presentation.dto.ClientDto;
-import com.microservice.client.presentation.dto.ClientRequestDto;
+import com.microservice.client.presentation.dto.client.ClientDto;
+import com.microservice.client.presentation.dto.client.ClientRequestDto;
 import com.microservice.client.presentation.dto.activity.ActivityResponseDto;
 import com.microservice.client.service.interfaces.IClientService;
 import com.microservice.client.util.Mapper;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,6 @@ public class ClientServiceImpl implements IClientService {
         client.setAge(clientRequestDto.getAge());
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
-
         clientRepository.save(client);
         return mapper.mapToClientDto(client);
     }
@@ -82,6 +82,8 @@ public class ClientServiceImpl implements IClientService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
         }
         Client client = clientRepository.findById(idClient).orElseThrow();
+        client.setActivityRegisterDate(LocalDateTime.now());
+        client.setActivityExpireDate(LocalDateTime.now().plusMonths(1));
         client.setActivityId(idActivity);
         clientRepository.save(client);
         return mapper.mapToClientDto(client);
@@ -94,9 +96,11 @@ public class ClientServiceImpl implements IClientService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
         }
         Client client = clientRepository.findById(idClient).orElseThrow();
-        if (client.getActivityId() == null){
+        if (client.getActivityId() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
         }
+        client.setActivityExpireDate(null);
+        client.setActivityRegisterDate(null);
         client.setActivityId(null);
         clientRepository.save(client);
         return mapper.mapToClientDto(client);

@@ -1,7 +1,7 @@
 package com.microservice.client.service.interfaces;
 
-import com.microservice.client.presentation.dto.ClientDto;
-import com.microservice.client.presentation.dto.ClientRequestDto;
+import com.microservice.client.presentation.dto.client.ClientDto;
+import com.microservice.client.presentation.dto.client.ClientRequestDto;
 
 import java.util.List;
 

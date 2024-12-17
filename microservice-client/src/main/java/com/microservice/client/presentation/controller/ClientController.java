@@ -1,7 +1,7 @@
 package com.microservice.client.presentation.controller;
 
-import com.microservice.client.presentation.dto.ClientDto;
-import com.microservice.client.presentation.dto.ClientRequestDto;
+import com.microservice.client.presentation.dto.client.ClientDto;
+import com.microservice.client.presentation.dto.client.ClientRequestDto;
 import com.microservice.client.service.interfaces.IClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

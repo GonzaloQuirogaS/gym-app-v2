@@ -28,6 +28,8 @@ public class Client {
     private Integer age;
     private String email;
     private Long phone;
+    private LocalDateTime activityRegisterDate;
+    private LocalDateTime activityExpireDate;
     private LocalDateTime registerDate = LocalDateTime.now();
 
     @Column(name = "activity_id")

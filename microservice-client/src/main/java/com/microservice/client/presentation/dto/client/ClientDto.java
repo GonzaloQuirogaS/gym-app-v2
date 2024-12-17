@@ -1,4 +1,4 @@
-package com.microservice.client.presentation.dto;
+package com.microservice.client.presentation.dto.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +20,7 @@ public class ClientDto {
     private String email;
     private Long phone;
     private LocalDateTime registerDate = LocalDateTime.now();
+    private LocalDateTime activityRegisterDate;
+    private LocalDateTime activityExpireDate;
 
 }
