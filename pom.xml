@@ -22,6 +22,7 @@
         <module>microservice-config</module>
         <module>microservice-client</module>
         <module>microservice-activity</module>
+        <module>microservice-invoice</module>
     </modules>
 
     <properties>
