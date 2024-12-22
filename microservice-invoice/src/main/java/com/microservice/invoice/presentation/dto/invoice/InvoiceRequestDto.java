@@ -1,4 +1,4 @@
-package com.microservice.invoice.presentation.dto;
+package com.microservice.invoice.presentation.dto.invoice;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

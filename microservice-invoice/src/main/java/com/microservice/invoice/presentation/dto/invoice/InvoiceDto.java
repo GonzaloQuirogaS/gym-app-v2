@@ -1,5 +1,7 @@
-package com.microservice.invoice.presentation.dto;
+package com.microservice.invoice.presentation.dto.invoice;
 
+import com.microservice.invoice.presentation.dto.activity.ActivityResponseDto;
+import com.microservice.invoice.presentation.dto.client.ClientResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +16,8 @@ import java.time.LocalDateTime;
 public class InvoiceDto {
     private Long id;
     private String number;
-    private Long idActivity;
     private LocalDateTime createdTime;
-    private Long idClient;
+    private ActivityResponseDto activityResponseDto;
+    private ClientResponseDto clientResponseDto;
     private Integer total;
 }

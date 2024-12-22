@@ -1,7 +1,7 @@
 package com.microservice.invoice.presentation.controller;
 
-import com.microservice.invoice.presentation.dto.InvoiceDto;
-import com.microservice.invoice.presentation.dto.InvoiceRequestDto;
+import com.microservice.invoice.presentation.dto.invoice.InvoiceDto;
+import com.microservice.invoice.presentation.dto.invoice.InvoiceRequestDto;
 import com.microservice.invoice.service.interfaces.IInvoiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,10 +46,10 @@ public class InvoiceController {
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save invoice",
             description = "Save invoice")
-    @PostMapping("/save")
-    private ResponseEntity<?> save(@RequestBody InvoiceRequestDto invoiceRequestDto) {
+    @PostMapping("/save/client/{idClient}/activity/{idActivity}")
+    private ResponseEntity<?> save(@PathVariable Long idActivity, @PathVariable Long idClient) {
         try {
-            return ResponseEntity.ok(invoiceService.save(invoiceRequestDto));
+            return ResponseEntity.ok(invoiceService.save(idActivity, idClient));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

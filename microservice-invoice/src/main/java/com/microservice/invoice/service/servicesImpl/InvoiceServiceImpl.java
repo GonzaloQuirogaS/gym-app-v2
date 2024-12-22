@@ -1,18 +1,22 @@
 package com.microservice.invoice.service.servicesImpl;
 
+import com.microservice.invoice.client.FeignClientActivity;
+import com.microservice.invoice.client.FeignClientClient;
 import com.microservice.invoice.persistence.entity.Invoice;
 import com.microservice.invoice.persistence.repository.InvoiceRepository;
-import com.microservice.invoice.presentation.dto.InvoiceDto;
-import com.microservice.invoice.presentation.dto.InvoiceRequestDto;
+import com.microservice.invoice.presentation.dto.activity.ActivityResponseDto;
+import com.microservice.invoice.presentation.dto.client.ClientResponseDto;
+import com.microservice.invoice.presentation.dto.invoice.InvoiceDto;
 import com.microservice.invoice.service.interfaces.IInvoiceService;
-import com.microservice.invoice.util.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,40 +24,94 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     private final InvoiceRepository invoiceRepository;
 
-    private final Mapper mapper;
+
+    private final FeignClientClient feignClient;
+
+    private final FeignClientActivity feignActivity;
 
     @Override
     public List<InvoiceDto> findAll() {
         List<Invoice> invoices = invoiceRepository.findAll();
-        return invoices.stream().map(mapper::mapToInvoiceDto).collect(Collectors.toList());
+        List<InvoiceDto> invoiceDtos = new ArrayList<>();
+        for (Invoice invoice : invoices) {
+            ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
+            ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
+
+            InvoiceDto invoiceDto = InvoiceDto.builder()
+                    .id(invoice.getId())
+                    .number(invoice.getNumber())
+                    .createdTime(invoice.getCreatedTime())
+                    .clientResponseDto(clientResponseDto)
+                    .activityResponseDto(activityResponseDto)
+                    .total(invoice.getTotal())
+                    .build();
+
+            invoiceDtos.add(invoiceDto);
+        }
+        return invoiceDtos;
     }
 
+
     @Override
-    public InvoiceDto save(InvoiceRequestDto invoiceRequestDto) {
+    public InvoiceDto save(Long idActivity, Long idClient) {
+        ActivityResponseDto activityResponseDto = feignActivity.findActivityById(idActivity);
+        if (activityResponseDto == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
+        }
+        ClientResponseDto clientResponseDto = feignClient.findClientById(idClient);
+        if (clientResponseDto == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
+        }
 
         UUID randomUUID = UUID.randomUUID();
 
         Invoice invoice = new Invoice();
         invoice.setNumber(randomUUID.toString());
-        invoice.setIdClient(invoiceRequestDto.getIdClient());
-        invoice.setIdActivity(invoiceRequestDto.getIdActivity());
-        invoice.setTotal(100);
+        invoice.setIdClient(idClient);
+        invoice.setIdActivity(idActivity);
+        invoice.setTotal(activityResponseDto.getPrice());
         invoice.setCreatedTime(LocalDateTime.now());
 
         invoiceRepository.save(invoice);
-        return mapper.mapToInvoiceDto(invoice);
+        return InvoiceDto.builder()
+                .id(invoice.getId())
+                .number(invoice.getNumber())
+                .createdTime(invoice.getCreatedTime())
+                .clientResponseDto(clientResponseDto)
+                .activityResponseDto(activityResponseDto)
+                .total(activityResponseDto.getPrice())
+                .build();
     }
 
     @Override
     public InvoiceDto deleteById(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow();
+        ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
+        ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
+
         invoiceRepository.deleteById(id);
-        return mapper.mapToInvoiceDto(invoice);
+        return InvoiceDto.builder()
+                .id(invoice.getId())
+                .number(invoice.getNumber())
+                .createdTime(invoice.getCreatedTime())
+                .clientResponseDto(clientResponseDto)
+                .activityResponseDto(activityResponseDto)
+                .total(activityResponseDto.getPrice())
+                .build();
     }
 
     @Override
     public InvoiceDto findById(Long id) {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow();
-        return mapper.mapToInvoiceDto(invoice);
+        ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
+        ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
+        return InvoiceDto.builder()
+                .id(invoice.getId())
+                .number(invoice.getNumber())
+                .createdTime(invoice.getCreatedTime())
+                .clientResponseDto(clientResponseDto)
+                .activityResponseDto(activityResponseDto)
+                .total(activityResponseDto.getPrice())
+                .build();
     }
 }
