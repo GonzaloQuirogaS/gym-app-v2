@@ -24,6 +24,11 @@ spring:
           predicates:
             - Path=/api/v2/activities/**
 
+        - id: invoices
+          uri: http://localhost:9080
+          predicates:
+            - Path=/api/v2/invoices/**
+
 springdoc:
   api-docs:
     enabled: true
@@ -38,3 +43,5 @@ springdoc:
         name: Activity Service
       - url: /api/v2/clients
         name: Client Service
+      - url: /api/v2/invoices
+        name: Invoice Service
