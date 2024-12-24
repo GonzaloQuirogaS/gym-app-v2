@@ -6,7 +6,6 @@ import com.microservice.client.service.interfaces.IClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,49 +32,26 @@ public class ClientController {
     @Operation(summary = "Save client",
             description = "Save client")
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody ClientRequestDto clientRequestDto) {
-        try {
-
-            ClientDto clientDto = clientService.save(clientRequestDto);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(clientDto);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e);
-        }
+    public ResponseEntity<ClientDto> save(@RequestBody ClientRequestDto clientRequestDto) {
+        ClientDto clientDto = clientService.save(clientRequestDto);
+        return ResponseEntity.ok(clientDto);
     }
 
     @Tag(name = "GET")
     @Operation(summary = "Get client by ID",
             description = "Get client by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<?> findClientById(@PathVariable Long id) {
-        try {
-            ClientDto clientDto = clientService.findById(id);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(clientDto);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("No existe cliente con ese id!");
-        }
+    public ResponseEntity<ClientDto> findClientById(@PathVariable Long id) {
+        ClientDto clientDto = clientService.findById(id);
+        return ResponseEntity.ok(clientDto);
     }
 
     @Tag(name = "PUT")
     @Operation(summary = "Update client", description = "Update client")
     @PutMapping("/update/{id}")
-    private ResponseEntity<?> update(@PathVariable Long id, @RequestBody ClientRequestDto clientRequestDto) {
-        try {
-            ClientDto clientDto = clientService.updateById(id, clientRequestDto);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(clientDto);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el ciente!");
-        }
+    private ResponseEntity<ClientDto> update(@PathVariable Long id, @RequestBody ClientRequestDto clientRequestDto) {
+        ClientDto clientDto = clientService.updateById(id, clientRequestDto);
+        return ResponseEntity.ok(clientDto);
     }
 
     @Tag(name = "DELETE")
@@ -83,58 +59,33 @@ public class ClientController {
             description = "Delete client by ID")
     @DeleteMapping("/delete/{id}")
     private ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            clientService.deleteById(id);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("No fue posible eliminar al cliente, asegurese de eliminar sus disciplinas y facturas y de que el cliente exista primero!");
-        }
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Eliminado con exito!");
+        ClientDto clientDto = clientService.findById(id);
+        clientService.deleteById(id);
+        return ResponseEntity.ok("Eliminado con exito!");
     }
 
     @Tag(name = "GET")
     @Operation(summary = "Get clients by activity ID",
             description = "Get clients by activity ID")
     @GetMapping("/search-by-activity/{id}")
-    public ResponseEntity<?> findByIdActivity(@PathVariable Long id) {
-        try {
+    public ResponseEntity<List<ClientDto>> findByIdActivity(@PathVariable Long id) {
             return ResponseEntity.ok(clientService.findByIdActivity(id));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("El id dado no corresponde a ninguna actividad!");
-        }
     }
 
     @Tag(name = "POST")
     @Operation(summary = "Set activity to clients by ID",
             description = "Set activity to clients by ID")
     @PostMapping("/set-activity/client/{idClient}/activity/{idActivity}")
-    public ResponseEntity<?> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
-        try {
-            return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Los ID dados no corresponde a ninguna actividad o cliente");
-        }
+    public ResponseEntity<ClientDto> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
+        return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
     }
 
     @Tag(name = "DELETE")
     @Operation(summary = "Delete clients activity",
             description = "Delete clients activity")
     @DeleteMapping("/delete-activity/client/{idClient}/activity/{idActivity}")
-    public ResponseEntity<?> deleteActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
-        try {
-            return ResponseEntity.ok(clientService.deleteActivity(idClient, idActivity));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Los ID dados no corresponde a ninguna actividad o cliente");
-        }
+    public ResponseEntity<ClientDto> deleteActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
+        return ResponseEntity.ok(clientService.deleteActivity(idClient, idActivity));
     }
 }
 

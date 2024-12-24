@@ -6,11 +6,11 @@ import com.microservice.client.persistence.repository.ClientRepository;
 import com.microservice.client.presentation.dto.client.ClientDto;
 import com.microservice.client.presentation.dto.client.ClientRequestDto;
 import com.microservice.client.presentation.dto.activity.ActivityResponseDto;
+import com.microservice.client.presentation.exception.ActivityNotFoundException;
+import com.microservice.client.presentation.exception.IdNotFoundException;
 import com.microservice.client.service.interfaces.IClientService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -70,13 +70,17 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public ClientDto updateById(Long id, ClientRequestDto clientRequestDto) {
 
-        Client client = clientRepository.findById(id).orElseThrow();
+        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
+
+        if (client.getActivityId() == null){
+            client.setActivityId(null);
+        }
+
         client.setName(clientRequestDto.getName());
         client.setSurname(clientRequestDto.getSurname());
         client.setAge(clientRequestDto.getAge());
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
-        client.setActivityId(null);
         clientRepository.save(client);
 
         return ClientDto.builder()
@@ -94,7 +98,7 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto findById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow();
+        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
         return ClientDto.builder()
                 .id(client.getId())
                 .name(client.getName())
@@ -110,7 +114,7 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public void deleteById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow();
+        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
         clientRepository.deleteById(id);
     }
 
@@ -133,8 +137,8 @@ public class ClientServiceImpl implements IClientService {
             clientDtos.add(clientDto);
         }
 
-        if (clientDtos.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Actividad no encontrada");
+        if (clientDtos.isEmpty()) {
+            throw new ActivityNotFoundException("Actividad no encontrada");
         }
 
         return clientDtos;
@@ -142,11 +146,11 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto setActivity(Long idClient, Long idActivity) {
+        Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
         ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
         if (activityResponseDto == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
+            throw new ActivityNotFoundException("Actividad no encontrada");
         }
-        Client client = clientRepository.findById(idClient).orElseThrow();
         client.setActivityRegisterDate(LocalDateTime.now());
         client.setActivityExpireDate(LocalDateTime.now().plusMonths(1));
         client.setActivityId(idActivity);
@@ -169,11 +173,11 @@ public class ClientServiceImpl implements IClientService {
     public ClientDto deleteActivity(Long idClient, Long idActivity) {
         ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
         if (activityResponseDto == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
+            throw new ActivityNotFoundException("Actividad no encontrada");
         }
-        Client client = clientRepository.findById(idClient).orElseThrow();
+        Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
         if (client.getActivityId() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
+            throw new ActivityNotFoundException("El cliente no esta anotado a la actividad");
         }
         client.setActivityExpireDate(null);
         client.setActivityRegisterDate(null);
