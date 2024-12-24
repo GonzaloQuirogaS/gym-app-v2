@@ -7,11 +7,10 @@ import com.microservice.invoice.persistence.repository.InvoiceRepository;
 import com.microservice.invoice.presentation.dto.activity.ActivityResponseDto;
 import com.microservice.invoice.presentation.dto.client.ClientResponseDto;
 import com.microservice.invoice.presentation.dto.invoice.InvoiceDto;
+import com.microservice.invoice.presentation.exception.IdNotFoundException;
 import com.microservice.invoice.service.interfaces.IInvoiceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.UUID;
 public class InvoiceServiceImpl implements IInvoiceService {
 
     private final InvoiceRepository invoiceRepository;
-
 
     private final FeignClientClient feignClient;
 
@@ -55,13 +53,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Override
     public InvoiceDto save(Long idActivity, Long idClient) {
         ActivityResponseDto activityResponseDto = feignActivity.findActivityById(idActivity);
-        if (activityResponseDto == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actividad no encontrada");
-        }
         ClientResponseDto clientResponseDto = feignClient.findClientById(idClient);
-        if (clientResponseDto == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado");
-        }
 
         UUID randomUUID = UUID.randomUUID();
 
@@ -85,7 +77,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public InvoiceDto deleteById(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow();
+        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe factura con ese ID"));
         ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
         ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
 
@@ -102,7 +94,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public InvoiceDto findById(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow();
+        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe factura con ese ID"));
         ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
         ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
         return InvoiceDto.builder()

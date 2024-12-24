@@ -1,7 +1,6 @@
 package com.microservice.invoice.service.interfaces;
 
 import com.microservice.invoice.presentation.dto.invoice.InvoiceDto;
-import com.microservice.invoice.presentation.dto.invoice.InvoiceRequestDto;
 
 import java.util.List;
 
