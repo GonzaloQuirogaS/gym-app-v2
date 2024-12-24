@@ -6,6 +6,7 @@ import com.microservice.activity.persistence.repository.ActivityRepository;
 import com.microservice.activity.presentation.dto.activity.ActivityDto;
 import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 import com.microservice.activity.presentation.dto.client.ClientDto;
+import com.microservice.activity.presentation.exception.IdNotFoundException;
 import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
 import com.microservice.activity.service.interfaces.IActivityService;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +55,7 @@ public class ActivityServiceImpl implements IActivityService {
 
     @Override
     public ActivityDto findById(Long id) {
-        Activity activity = activityRepository.findById(id).orElseThrow();
+        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe actividad con ese ID"));
 
         return ActivityDto.builder()
                 .id(activity.getId())
@@ -69,7 +70,7 @@ public class ActivityServiceImpl implements IActivityService {
 
     @Override
     public ActivityDto update(Long id, ActivityRequestDto activityRequestDto) {
-        Activity activity = activityRepository.findById(id).orElseThrow();
+        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe actividad con ese ID"));
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         activityRepository.save(activity);
@@ -83,7 +84,7 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public ActivityByClientResponse findClientsByIdActivity(Long id) {
 
-        Activity activity = activityRepository.findById(id).orElseThrow();
+        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe actividad con ese ID"));
         List<ClientDto> clientDtoList = client.findAllClientsByActivity(id);
         return ActivityByClientResponse.builder()
                 .id(activity.getId())
