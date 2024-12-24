@@ -7,15 +7,14 @@ import com.microservice.client.presentation.dto.client.ClientDto;
 import com.microservice.client.presentation.dto.client.ClientRequestDto;
 import com.microservice.client.presentation.dto.activity.ActivityResponseDto;
 import com.microservice.client.service.interfaces.IClientService;
-import com.microservice.client.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,12 +22,27 @@ public class ClientServiceImpl implements IClientService {
 
     private final ClientRepository clientRepository;
     private final FeingClient feingClient;
-    private final Mapper mapper;
 
     @Override
     public List<ClientDto> findAll() {
         List<Client> clients = clientRepository.findAll();
-        return clients.stream().map(mapper::mapToClientDto).collect(Collectors.toList());
+        List<ClientDto> clientDtos = new ArrayList<>();
+
+        for (Client client : clients) {
+            ClientDto clientDto = ClientDto.builder()
+                    .id(client.getId())
+                    .name(client.getName())
+                    .surname(client.getSurname())
+                    .age(client.getAge())
+                    .email(client.getEmail())
+                    .phone(client.getPhone())
+                    .registerDate(client.getRegisterDate())
+                    .activityRegisterDate(client.getActivityRegisterDate())
+                    .activityExpireDate(client.getActivityExpireDate())
+                    .build();
+            clientDtos.add(clientDto);
+        }
+        return clientDtos;
     }
 
     @Override
@@ -40,7 +54,17 @@ public class ClientServiceImpl implements IClientService {
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
         clientRepository.save(client);
-        return mapper.mapToClientDto(client);
+        return ClientDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .age(client.getAge())
+                .email(client.getEmail())
+                .phone(client.getPhone())
+                .registerDate(client.getRegisterDate())
+                .activityRegisterDate(client.getActivityRegisterDate())
+                .activityExpireDate(client.getActivityExpireDate())
+                .build();
     }
 
     @Override
@@ -55,24 +79,65 @@ public class ClientServiceImpl implements IClientService {
         client.setActivityId(null);
         clientRepository.save(client);
 
-        return mapper.mapToClientDto(client);
+        return ClientDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .age(client.getAge())
+                .email(client.getEmail())
+                .phone(client.getPhone())
+                .registerDate(client.getRegisterDate())
+                .activityRegisterDate(client.getActivityRegisterDate())
+                .activityExpireDate(client.getActivityExpireDate())
+                .build();
     }
 
     @Override
     public ClientDto findById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow();
-        return mapper.mapToClientDto(client);
+        return ClientDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .age(client.getAge())
+                .email(client.getEmail())
+                .phone(client.getPhone())
+                .registerDate(client.getRegisterDate())
+                .activityRegisterDate(client.getActivityRegisterDate())
+                .activityExpireDate(client.getActivityExpireDate())
+                .build();
     }
 
     @Override
     public void deleteById(Long id) {
+        Client client = clientRepository.findById(id).orElseThrow();
         clientRepository.deleteById(id);
     }
 
     @Override
     public List<ClientDto> findByIdActivity(Long id) {
         List<Client> clients = clientRepository.findAllByActivityId(id);
-        return clients.stream().map(mapper::mapToClientDto).collect(Collectors.toList());
+        List<ClientDto> clientDtos = new ArrayList<>();
+        for (Client client : clients) {
+            ClientDto clientDto = ClientDto.builder()
+                    .id(client.getId())
+                    .name(client.getName())
+                    .surname(client.getSurname())
+                    .age(client.getAge())
+                    .email(client.getEmail())
+                    .phone(client.getPhone())
+                    .registerDate(client.getRegisterDate())
+                    .activityRegisterDate(client.getActivityRegisterDate())
+                    .activityExpireDate(client.getActivityExpireDate())
+                    .build();
+            clientDtos.add(clientDto);
+        }
+
+        if (clientDtos.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Actividad no encontrada");
+        }
+
+        return clientDtos;
     }
 
     @Override
@@ -86,7 +151,18 @@ public class ClientServiceImpl implements IClientService {
         client.setActivityExpireDate(LocalDateTime.now().plusMonths(1));
         client.setActivityId(idActivity);
         clientRepository.save(client);
-        return mapper.mapToClientDto(client);
+
+        return ClientDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .age(client.getAge())
+                .email(client.getEmail())
+                .phone(client.getPhone())
+                .registerDate(client.getRegisterDate())
+                .activityRegisterDate(client.getActivityRegisterDate())
+                .activityExpireDate(client.getActivityExpireDate())
+                .build();
     }
 
     @Override
@@ -103,6 +179,17 @@ public class ClientServiceImpl implements IClientService {
         client.setActivityRegisterDate(null);
         client.setActivityId(null);
         clientRepository.save(client);
-        return mapper.mapToClientDto(client);
+
+        return ClientDto.builder()
+                .id(client.getId())
+                .name(client.getName())
+                .surname(client.getSurname())
+                .age(client.getAge())
+                .email(client.getEmail())
+                .phone(client.getPhone())
+                .registerDate(client.getRegisterDate())
+                .activityRegisterDate(client.getActivityRegisterDate())
+                .activityExpireDate(client.getActivityExpireDate())
+                .build();
     }
 }
