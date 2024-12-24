@@ -2,6 +2,7 @@ package com.microservice.activity.presentation.controller;
 
 import com.microservice.activity.presentation.dto.activity.ActivityDto;
 import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
+import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
 import com.microservice.activity.service.interfaces.IActivityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,7 +47,7 @@ public class ActivityController {
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save activity",
             description = "Save activity")
-    private ResponseEntity<?> save(@RequestBody ActivityRequestDto activityRequestDto) {
+    private ResponseEntity<ActivityDto> save(@RequestBody ActivityRequestDto activityRequestDto) {
         return ResponseEntity.ok(activityService.save(activityRequestDto));
     }
 
@@ -64,7 +65,7 @@ public class ActivityController {
     @Tag(name = "GET")
     @Operation(summary = "Search clients by activity ID",
             description = "Search clients by activity ID")
-    public ResponseEntity<?> findClientsByIdActivity(@PathVariable Long id) {
+    public ResponseEntity<ActivityByClientResponse> findClientsByIdActivity(@PathVariable Long id) {
         return ResponseEntity.ok(activityService.findClientsByIdActivity(id));
     }
 }
