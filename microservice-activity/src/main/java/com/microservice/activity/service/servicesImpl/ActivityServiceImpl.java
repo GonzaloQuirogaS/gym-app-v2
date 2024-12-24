@@ -8,12 +8,11 @@ import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 import com.microservice.activity.presentation.dto.client.ClientDto;
 import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
 import com.microservice.activity.service.interfaces.IActivityService;
-import com.microservice.activity.util.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +21,21 @@ public class ActivityServiceImpl implements IActivityService {
 
     private final ActivityRepository activityRepository;
     private final Client client;
-    private final Mapper mapper;
 
     @Override
     public List<ActivityDto> findAll() {
         List<Activity> activities = activityRepository.findAll();
-        return activities.stream().map(mapper::mapToActivityDto).collect(Collectors.toList());
+        List<ActivityDto> activityDtos = new ArrayList<>();
+
+        for (Activity activity : activities) {
+            ActivityDto activityDto = ActivityDto.builder()
+                    .id(activity.getId())
+                    .name(activity.getName())
+                    .price(activity.getPrice())
+                    .build();
+            activityDtos.add(activityDto);
+        }
+        return activityDtos;
     }
 
     @Override
@@ -36,13 +44,22 @@ public class ActivityServiceImpl implements IActivityService {
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         activityRepository.save(activity);
-        return mapper.mapToActivityDto(activity);
+
+        return ActivityDto.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .price(activity.getPrice())
+                .build();
     }
 
     @Override
     public ActivityDto findById(Long id) {
         Activity activity = activityRepository.findById(id).orElseThrow();
-        return mapper.mapToActivityDto(activity);
+
+        return ActivityDto.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .price(activity.getPrice()).build();
     }
 
     @Override
@@ -56,16 +73,18 @@ public class ActivityServiceImpl implements IActivityService {
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         activityRepository.save(activity);
-        return mapper.mapToActivityDto(activity);
+        return ActivityDto.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .price(activity.getPrice())
+                .build();
     }
 
     @Override
     public ActivityByClientResponse findClientsByIdActivity(Long id) {
 
         Activity activity = activityRepository.findById(id).orElseThrow();
-
         List<ClientDto> clientDtoList = client.findAllClientsByActivity(id);
-
         return ActivityByClientResponse.builder()
                 .id(activity.getId())
                 .name(activity.getName())
