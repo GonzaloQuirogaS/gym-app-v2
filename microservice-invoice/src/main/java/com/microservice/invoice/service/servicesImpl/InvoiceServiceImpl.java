@@ -51,16 +51,20 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 
     @Override
-    public InvoiceDto save(Long idActivity, Long idClient) {
-        ActivityResponseDto activityResponseDto = feignActivity.findActivityById(idActivity);
+    public InvoiceDto save(Long idClient) {
         ClientResponseDto clientResponseDto = feignClient.findClientById(idClient);
+
+        if (clientResponseDto.getIdActivity() == null) {
+            throw new IdNotFoundException("Cliente no registrado en actividad!");
+        }
+        ActivityResponseDto activityResponseDto = feignActivity.findActivityById(clientResponseDto.getIdActivity());
 
         UUID randomUUID = UUID.randomUUID();
 
         Invoice invoice = new Invoice();
         invoice.setNumber(randomUUID.toString());
         invoice.setIdClient(idClient);
-        invoice.setIdActivity(idActivity);
+        invoice.setIdActivity(activityResponseDto.getId());
         invoice.setTotal(activityResponseDto.getPrice());
         invoice.setCreatedTime(LocalDateTime.now());
 

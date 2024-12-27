@@ -38,9 +38,9 @@ public class InvoiceController {
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save invoice",
             description = "Save invoice")
-    @PostMapping("/save/client/{idClient}/activity/{idActivity}")
-    private ResponseEntity<InvoiceDto> save(@PathVariable Long idActivity, @PathVariable Long idClient) {
-        return ResponseEntity.ok(invoiceService.save(idActivity, idClient));
+    @PostMapping("/save/client/{idClient}")
+    private ResponseEntity<InvoiceDto> save(@PathVariable Long idClient) {
+        return ResponseEntity.ok(invoiceService.save(idClient));
     }
 
     @Tag(name = "DELETE")

@@ -8,7 +8,7 @@ public interface IInvoiceService {
 
     List<InvoiceDto> findAll();
 
-    InvoiceDto save(Long idActivity, Long idClient);
+    InvoiceDto save(Long idClient);
 
     InvoiceDto deleteById(Long id);
 
