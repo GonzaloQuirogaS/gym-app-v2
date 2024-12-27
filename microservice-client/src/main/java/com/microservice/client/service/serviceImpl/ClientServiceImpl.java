@@ -72,7 +72,7 @@ public class ClientServiceImpl implements IClientService {
 
         Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
 
-        if (client.getActivityId() == null){
+        if (client.getActivityId() == null) {
             client.setActivityId(null);
         }
 
@@ -107,6 +107,7 @@ public class ClientServiceImpl implements IClientService {
                 .email(client.getEmail())
                 .phone(client.getPhone())
                 .registerDate(client.getRegisterDate())
+                .idActivity(client.getActivityId())
                 .activityRegisterDate(client.getActivityRegisterDate())
                 .activityExpireDate(client.getActivityExpireDate())
                 .build();

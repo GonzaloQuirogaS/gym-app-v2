@@ -19,6 +19,7 @@ public class ClientResponseDto {
     private String email;
     private Long phone;
     private LocalDateTime registerDate = LocalDateTime.now();
+    private Long idActivity;
     private LocalDateTime activityRegisterDate;
     private LocalDateTime activityExpireDate;
 }

@@ -19,6 +19,7 @@ public class ClientDto {
     private Integer age;
     private String email;
     private Long phone;
+    private Long idActivity;
     private LocalDateTime registerDate = LocalDateTime.now();
     private LocalDateTime activityRegisterDate;
     private LocalDateTime activityExpireDate;
