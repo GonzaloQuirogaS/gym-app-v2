@@ -3,10 +3,13 @@ package com.microservice.client.presentation.controller;
 import com.microservice.client.presentation.dto.client.ClientDto;
 import com.microservice.client.presentation.dto.client.ClientRequestDto;
 import com.microservice.client.service.interfaces.IClientService;
+import com.microservice.client.util.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +19,8 @@ import java.util.List;
 @RequestMapping("/api/v2/clients")
 @CrossOrigin("*")
 public class ClientController {
+
+    private final Utils utils;
 
     private final IClientService clientService;
 
@@ -32,7 +37,10 @@ public class ClientController {
     @Operation(summary = "Save client",
             description = "Save client")
     @PostMapping("/save")
-    public ResponseEntity<ClientDto> save(@RequestBody ClientRequestDto clientRequestDto) {
+    public ResponseEntity<?> save(@Valid @RequestBody ClientRequestDto clientRequestDto, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return utils.validation(result);
+        }
         ClientDto clientDto = clientService.save(clientRequestDto);
         return ResponseEntity.ok(clientDto);
     }
@@ -69,7 +77,7 @@ public class ClientController {
             description = "Get clients by activity ID")
     @GetMapping("/search-by-activity/{id}")
     public ResponseEntity<List<ClientDto>> findByIdActivity(@PathVariable Long id) {
-            return ResponseEntity.ok(clientService.findByIdActivity(id));
+        return ResponseEntity.ok(clientService.findByIdActivity(id));
     }
 
     @Tag(name = "POST")
