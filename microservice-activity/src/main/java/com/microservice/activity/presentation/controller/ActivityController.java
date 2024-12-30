@@ -4,10 +4,13 @@ import com.microservice.activity.presentation.dto.activity.ActivityDto;
 import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
 import com.microservice.activity.service.interfaces.IActivityService;
+import com.microservice.activity.util.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,8 @@ import java.util.List;
 public class ActivityController {
 
     private final IActivityService activityService;
+
+    private final Utils utils;
 
     @Tag(name = "GET", description = "Get methods")
     @Operation(summary = "Get all activities",
@@ -47,7 +52,10 @@ public class ActivityController {
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save activity",
             description = "Save activity")
-    private ResponseEntity<ActivityDto> save(@RequestBody ActivityRequestDto activityRequestDto) {
+    private ResponseEntity<?> save(@Valid @RequestBody ActivityRequestDto activityRequestDto, BindingResult result) {
+        if (result.hasFieldErrors()) {
+            return utils.validation(result);
+        }
         return ResponseEntity.ok(activityService.save(activityRequestDto));
     }
 
