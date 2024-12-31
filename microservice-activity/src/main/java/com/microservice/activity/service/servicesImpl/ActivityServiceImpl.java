@@ -12,6 +12,8 @@ import com.microservice.activity.service.interfaces.IActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.microservice.activity.util.constant.ErrorConstants.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class ActivityServiceImpl implements IActivityService {
 
     @Override
     public ActivityDto findById(Long id) {
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe actividad con ese ID"));
+        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
 
         return ActivityDto.builder()
                 .id(activity.getId())
@@ -70,7 +72,7 @@ public class ActivityServiceImpl implements IActivityService {
 
     @Override
     public ActivityDto update(Long id, ActivityRequestDto activityRequestDto) {
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe actividad con ese ID"));
+        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         activityRepository.save(activity);
@@ -84,7 +86,7 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public ActivityByClientResponse findClientsByIdActivity(Long id) {
 
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe actividad con ese ID"));
+        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
         List<ClientDto> clientDtoList = client.findAllClientsByActivity(id);
         return ActivityByClientResponse.builder()
                 .id(activity.getId())

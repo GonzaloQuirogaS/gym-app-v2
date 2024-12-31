@@ -13,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import static com.microservice.activity.util.constant.PathConstants.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/activities")
+@RequestMapping(API_V2_ACTIVITIES)
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ActivityController {
@@ -33,7 +35,7 @@ public class ActivityController {
         return ResponseEntity.ok(activityService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(GET_BY_ID)
     @Tag(name = "GET")
     @Operation(summary = "Get activity by ID",
             description = "Get activity by ID")
@@ -41,14 +43,14 @@ public class ActivityController {
         return ResponseEntity.ok(activityService.findById(id));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping(UPDATE)
     @Tag(name = "PUT")
     @Operation(summary = "Update activity", description = "Update activity")
     private ResponseEntity<ActivityDto> update(@PathVariable Long id, @RequestBody ActivityRequestDto activityRequestDto) {
         return ResponseEntity.ok(activityService.update(id, activityRequestDto));
     }
 
-    @PostMapping("/save")
+    @PostMapping(SAVE)
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save activity",
             description = "Save activity")
@@ -59,7 +61,7 @@ public class ActivityController {
         return ResponseEntity.ok(activityService.save(activityRequestDto));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping(DELETE)
     @Tag(name = "DELETE")
     @Operation(summary = "Delete activity by ID",
             description = "Delete activity by ID")
@@ -69,7 +71,7 @@ public class ActivityController {
         return ResponseEntity.ok(activityDto);
     }
 
-    @GetMapping("/search-client/{id}")
+    @GetMapping(SEARCH_CLIENT_BY_ID)
     @Tag(name = "GET")
     @Operation(summary = "Search clients by activity ID",
             description = "Search clients by activity ID")
