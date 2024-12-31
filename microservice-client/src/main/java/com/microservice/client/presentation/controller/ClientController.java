@@ -12,11 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import static com.microservice.client.util.constant.PathConstants.*;
+
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/clients")
+@RequestMapping(API_V2_CLIENTS)
 @CrossOrigin("*")
 public class ClientController {
 
@@ -36,7 +38,7 @@ public class ClientController {
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save client",
             description = "Save client")
-    @PostMapping("/save")
+    @PostMapping(SAVE)
     public ResponseEntity<?> save(@Valid @RequestBody ClientRequestDto clientRequestDto, BindingResult result) {
         if (result.hasFieldErrors()) {
             return utils.validation(result);
@@ -48,7 +50,7 @@ public class ClientController {
     @Tag(name = "GET")
     @Operation(summary = "Get client by ID",
             description = "Get client by ID")
-    @GetMapping("/{id}")
+    @GetMapping(GET_BY_ID)
     public ResponseEntity<ClientDto> findClientById(@PathVariable Long id) {
         ClientDto clientDto = clientService.findById(id);
         return ResponseEntity.ok(clientDto);
@@ -56,7 +58,7 @@ public class ClientController {
 
     @Tag(name = "PUT")
     @Operation(summary = "Update client", description = "Update client")
-    @PutMapping("/update/{id}")
+    @PutMapping(UPDATE)
     private ResponseEntity<ClientDto> update(@PathVariable Long id, @RequestBody ClientRequestDto clientRequestDto) {
         ClientDto clientDto = clientService.updateById(id, clientRequestDto);
         return ResponseEntity.ok(clientDto);
@@ -65,7 +67,7 @@ public class ClientController {
     @Tag(name = "DELETE")
     @Operation(summary = "Delete client by ID",
             description = "Delete client by ID")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping(DELETE)
     private ResponseEntity<?> delete(@PathVariable Long id) {
         ClientDto clientDto = clientService.findById(id);
         clientService.deleteById(id);
@@ -75,7 +77,7 @@ public class ClientController {
     @Tag(name = "GET")
     @Operation(summary = "Get clients by activity ID",
             description = "Get clients by activity ID")
-    @GetMapping("/search-by-activity/{id}")
+    @GetMapping(SEARCH_BY_ACTIVITY_ID)
     public ResponseEntity<List<ClientDto>> findByIdActivity(@PathVariable Long id) {
         return ResponseEntity.ok(clientService.findByIdActivity(id));
     }
@@ -83,7 +85,7 @@ public class ClientController {
     @Tag(name = "POST")
     @Operation(summary = "Set activity to clients by ID",
             description = "Set activity to clients by ID")
-    @PostMapping("/set-activity/client/{idClient}/activity/{idActivity}")
+    @PostMapping(SET_ACTIVITY_TO_CLIENT_BY_ID)
     public ResponseEntity<ClientDto> setActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
         return ResponseEntity.ok(clientService.setActivity(idClient, idActivity));
     }
@@ -91,7 +93,7 @@ public class ClientController {
     @Tag(name = "DELETE")
     @Operation(summary = "Delete clients activity",
             description = "Delete clients activity")
-    @DeleteMapping("/delete-activity/client/{idClient}/activity/{idActivity}")
+    @DeleteMapping(DELETE_CLIENT_ACTIVITY)
     public ResponseEntity<ClientDto> deleteActivity(@PathVariable Long idClient, @PathVariable Long idActivity) {
         return ResponseEntity.ok(clientService.deleteActivity(idClient, idActivity));
     }

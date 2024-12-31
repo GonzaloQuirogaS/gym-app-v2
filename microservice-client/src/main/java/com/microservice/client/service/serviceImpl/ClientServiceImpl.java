@@ -12,6 +12,8 @@ import com.microservice.client.service.interfaces.IClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.microservice.client.util.constant.ErrorConstants.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +72,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public ClientDto updateById(Long id, ClientRequestDto clientRequestDto) {
 
-        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
 
         if (client.getActivityId() == null) {
             client.setActivityId(null);
@@ -98,7 +100,7 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto findById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
         return ClientDto.builder()
                 .id(client.getId())
                 .name(client.getName())
@@ -115,7 +117,7 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public void deleteById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
         clientRepository.deleteById(id);
     }
 
@@ -139,7 +141,7 @@ public class ClientServiceImpl implements IClientService {
         }
 
         if (clientDtos.isEmpty()) {
-            throw new ActivityNotFoundException("Actividad no encontrada");
+            throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
 
         return clientDtos;
@@ -147,10 +149,10 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto setActivity(Long idClient, Long idActivity) {
-        Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
+        Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
         ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
         if (activityResponseDto == null) {
-            throw new ActivityNotFoundException("Actividad no encontrada");
+            throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
         client.setActivityRegisterDate(LocalDateTime.now());
         client.setActivityExpireDate(LocalDateTime.now().plusMonths(1));
@@ -174,11 +176,11 @@ public class ClientServiceImpl implements IClientService {
     public ClientDto deleteActivity(Long idClient, Long idActivity) {
         ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
         if (activityResponseDto == null) {
-            throw new ActivityNotFoundException("Actividad no encontrada");
+            throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
-        Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException("No existe cliente con ese ID"));
+        Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
         if (client.getActivityId() == null) {
-            throw new ActivityNotFoundException("El cliente no esta anotado a la actividad");
+            throw new ActivityNotFoundException(CLIENT_ACTIVITY_NOT_FOUND);
         }
         client.setActivityExpireDate(null);
         client.setActivityRegisterDate(null);
