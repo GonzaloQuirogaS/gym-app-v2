@@ -12,6 +12,8 @@ import com.microservice.invoice.service.interfaces.IInvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.microservice.invoice.util.constant.ErrorConstants.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +57,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         ClientResponseDto clientResponseDto = feignClient.findClientById(idClient);
 
         if (clientResponseDto.getIdActivity() == null) {
-            throw new IdNotFoundException("Cliente no registrado en actividad!");
+            throw new IdNotFoundException(CLIENT_NOT_REGISTERED);
         }
         ActivityResponseDto activityResponseDto = feignActivity.findActivityById(clientResponseDto.getIdActivity());
 
@@ -81,7 +83,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public InvoiceDto deleteById(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe factura con ese ID"));
+        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new IdNotFoundException(INVOICE_NOT_FOUND));
         ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
         ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
 
@@ -98,7 +100,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public InvoiceDto findById(Long id) {
-        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new IdNotFoundException("No existe factura con ese ID"));
+        Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new IdNotFoundException(INVOICE_NOT_FOUND));
         ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
         ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
         return InvoiceDto.builder()

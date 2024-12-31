@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.microservice.invoice.util.constant.PathConstants.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/invoices")
+@RequestMapping(API_V2_INVOICES)
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class InvoiceController {
@@ -30,7 +32,7 @@ public class InvoiceController {
     @Tag(name = "GET")
     @Operation(summary = "Get invoice by ID",
             description = "Get invoice by ID")
-    @GetMapping("/{id}")
+    @GetMapping(GET_BY_ID)
     ResponseEntity<InvoiceDto> findInvoiceById(@PathVariable Long id) {
         return ResponseEntity.ok(invoiceService.findById(id));
     }
@@ -38,7 +40,7 @@ public class InvoiceController {
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save invoice",
             description = "Save invoice")
-    @PostMapping("/save/client/{idClient}")
+    @PostMapping(SAVE)
     private ResponseEntity<InvoiceDto> save(@PathVariable Long idClient) {
         return ResponseEntity.ok(invoiceService.save(idClient));
     }
@@ -46,7 +48,7 @@ public class InvoiceController {
     @Tag(name = "DELETE")
     @Operation(summary = "Delete invoice by ID",
             description = "Delete invoice by ID")
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping(DELETE)
     private ResponseEntity<InvoiceDto> delete(@PathVariable Long id) {
         InvoiceDto invoiceDto = invoiceService.findById(id);
         invoiceService.deleteById(id);
