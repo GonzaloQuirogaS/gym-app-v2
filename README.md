@@ -1,6 +1,5 @@
 # Documentacion de Proyecto GYM V2
 
----
 
 
 El proyecto consiste en el desarrollo de una API con tecnología Java utilizando el framework de Spring con Springboot e implementando arquitectura de Microservicios con SpringCloud. 
