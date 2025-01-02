@@ -7,14 +7,14 @@ El proyecto consiste en el desarrollo de una API con tecnología Java utilizando
 Este proyecto tiene como objetivo crear rutas e implementar acciones que permitan gestionar distintas operaciones y consultas a bases de datos.
 ## Requisitos:
 
----
+
 
 - Java Development Kit (JDK): Versión 11 o superior.
 - Apache Maven: Versión 3.6 o superior.
 - MySQL: Versión 8 o superior.
 ## Tecnologias utilizadas
 
----
+
 
 - **Frameworks y librerías:**
    - Spring Boot: Framework para crear aplicaciones web y microservicios de manera rápida y sencilla.
@@ -36,7 +36,7 @@ Este proyecto tiene como objetivo crear rutas e implementar acciones que permita
 
 ## Características
 
----
+
 
 A continuación, se detallan las principales características de este proyecto:
 
@@ -73,7 +73,7 @@ A continuación, se detallan las principales características de este proyecto:
 
 ## Configuración
 
----
+
 
 Antes de ejecutar la aplicación, es necesario configurar las siguientes propiedades en los
 archivos `msvc-invoice.yml`, `msvc-client.yml` y ,`msvc-activity.yml` dentro del microservicio de configuraciones en la
@@ -99,7 +99,7 @@ spring:
 
 ## Ejecucion de proyecto
 
----
+
 
 ### Pasos para ejecutar el proyecto
 
