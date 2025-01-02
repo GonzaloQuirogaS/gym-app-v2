@@ -112,23 +112,23 @@ spring:
 
 ## Endpoints
 
-| Endpoint                                                                   | Metodo | Parametros / Body                                                  | Descripcion                                       |
-|----------------------------------------------------------------------------|--------|--------------------------------------------------------------------|---------------------------------------------------|
-| `/api/v2/clients`                                                          | GET    | N/A                                                                | Obtener todos los clientes registrados.           |
-| `/api/v2/clients/{id}`                                                     | GET    | `{ id }` (Path Parameter)                                          | Obtener cliente por id.                           |
-| `/api/v2/clients/save`                                                     | POST   | `{ name, surname, age, email, phone }`                             | Guardar cliente.                                  |
-| `/api/v2/clients/update/{id}`                                              | PUT    | `{ id }` (Path Parameter) , `{ name, surname, age, email, phone }` | Actualizar cliente por id.                        |
-| `/api/v2/clients/delete/{id}`                                              | DELETE | `{ id }` (Path Parameter)                                          | Eliminar cliente por id.                          |
-| `/api/v2/clients/search-by-activity/{id}`                                  | GET    | `{ id }` (Path Parameter)                                          | Obtener clientes registrados en actividad por id. |
-| `/api/v2/clients/set-activity/client/{idClient}/activity/{idActivity}`     | POST   | `{ idClient }` (Path Parameter),`{ idActivity }` (Path Parameter)  | Agregar actividad a cliente por id.               |
-| `/api/v2/clients/delete-activity/client/{idClient}/activity/{idActivity}"` | GET    | `{ idClient }` (Path Parameter),`{ idActivity }` (Path Parameter)  | Eliminar actividad de cliente por id.             |
-| `/api/v2/activities`                                                       | GET    | N/A                                                                | Obtener todas las actividades registradas.        |
-| `/api/v2/activities/{id}`                                                  | GET    | `{ id }` (Path Parameter)                                          | Obtener actividad por id.                         |
-| `/api/v2/activities/save`                                                  | POST   | `{ name, price }`                                                  | Guardar actividad.                                |
-| `/api/v2/activities/update/{id}`                                           | PUT    | `{ id }` (Path Parameter) , `{ name, price }`                      | Actualizar actividad por id.                      |
-| `/api/v2/activities/delete/{id}`                                           | DELETE | `{ id }` (Path Parameter)                                          | Eliminar actividad por id.                        |
-| `/api/v2/activities/search-client/{id}`                                    | GET    | `{ id }` (Path Parameter)                                          | Obtener clientes registrados en actividad por id. |
-| `/api/v2/invoices`                                                         | GET    | N/A                                                                | Obtener todas las facturas registradas.           |
-| `/api/v2/invoices/{id}`                                                    | GET    | `{ id }` (Path Parameter)                                          | Obtener factura por id.                           |
-| `/api/v2/invoices/save/client/{idClient}`                                  | POST   | `{ idClient }` (Path Parameter)                                    | Guardar factura de cliente por id.                |
-| `/api/v2/invoices/delete/{id}`                                             | DELETE | `{ id }` (Path Parameter)                                          | Eliminar factura por id.                          |          |
+| Endpoint                                                                  | Metodo | Parametros / Body                                                  | Descripcion                                       |
+|---------------------------------------------------------------------------|--------|--------------------------------------------------------------------|---------------------------------------------------|
+| `/api/v2/clients`                                                         | GET    | N/A                                                                | Obtener todos los clientes registrados.           |
+| `/api/v2/clients/{id}`                                                    | GET    | `{ id }` (Path Parameter)                                          | Obtener cliente por id.                           |
+| `/api/v2/clients/save`                                                    | POST   | `{ name, surname, age, email, phone }`                             | Guardar cliente.                                  |
+| `/api/v2/clients/update/{id}`                                             | PUT    | `{ id }` (Path Parameter) , `{ name, surname, age, email, phone }` | Actualizar cliente por id.                        |
+| `/api/v2/clients/delete/{id}`                                             | DELETE | `{ id }` (Path Parameter)                                          | Eliminar cliente por id.                          |
+| `/api/v2/clients/search-by-activity/{id}`                                 | GET    | `{ id }` (Path Parameter)                                          | Obtener clientes registrados en actividad por id. |
+| `/api/v2/clients/set-activity/client/{idClient}/activity/{idActivity}`    | POST   | `{ idClient }` (Path Parameter),`{ idActivity }` (Path Parameter)  | Agregar actividad a cliente por id.               |
+| `/api/v2/clients/delete-activity/client/{idClient}/activity/{idActivity}` | GET    | `{ idClient }` (Path Parameter),`{ idActivity }` (Path Parameter)  | Eliminar actividad de cliente por id.             |
+| `/api/v2/activities`                                                      | GET    | N/A                                                                | Obtener todas las actividades registradas.        |
+| `/api/v2/activities/{id}`                                                 | GET    | `{ id }` (Path Parameter)                                          | Obtener actividad por id.                         |
+| `/api/v2/activities/save`                                                 | POST   | `{ name, price }`                                                  | Guardar actividad.                                |
+| `/api/v2/activities/update/{id}`                                          | PUT    | `{ id }` (Path Parameter) , `{ name, price }`                      | Actualizar actividad por id.                      |
+| `/api/v2/activities/delete/{id}`                                          | DELETE | `{ id }` (Path Parameter)                                          | Eliminar actividad por id.                        |
+| `/api/v2/activities/search-client/{id}`                                   | GET    | `{ id }` (Path Parameter)                                          | Obtener clientes registrados en actividad por id. |
+| `/api/v2/invoices`                                                        | GET    | N/A                                                                | Obtener todas las facturas registradas.           |
+| `/api/v2/invoices/{id}`                                                   | GET    | `{ id }` (Path Parameter)                                          | Obtener factura por id.                           |
+| `/api/v2/invoices/save/client/{idClient}`                                 | POST   | `{ idClient }` (Path Parameter)                                    | Guardar factura de cliente por id.                |
+| `/api/v2/invoices/delete/{id}`                                            | DELETE | `{ id }` (Path Parameter)                                          | Eliminar factura por id.                          |          |
