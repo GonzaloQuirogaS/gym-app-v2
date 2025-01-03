@@ -35,8 +35,6 @@ Este proyecto tiene como objetivo crear rutas e implementar acciones que permita
 
 ## Características
 
-
-
 A continuación, se detallan las principales características de este proyecto:
 
 1. **API**: La aplicación desarrollada se encarga de consumir la API obteniendo información relevante sobre distintos
@@ -64,15 +62,15 @@ A continuación, se detallan las principales características de este proyecto:
     - Microservice - Config: Proporciona configuraciones para los demás microservicios, permitiendo la gestión
       centralizada de configuraciones.
 
-3. **Manejo de excepciones:**
-    - El proyecto incluye un sistema de manejo de excepciones que garantiza una respuesta adecuada a diferentes tipos de errores.
+3. **Manejo de excepciones:** El proyecto incluye un sistema de manejo de excepciones que garantiza una respuesta adecuada a diferentes tipos de errores. Cada microservicio maneja los errores de manera independiente.
 
 4. **Almacenamiento en Base de Datos**: Se implementa un esquema de base de datos MySQL para almacenar la
    información necesaria.
 
+5. **Implementación de Swagger**: Se incluye la interfaz de Swagger para exponer los endpoints de la API. 
+Swagger proporciona una documentación clara y concisa de los endpoints, facilitando la integración y prueba de la API.
+
 ## Configuración
-
-
 
 Antes de ejecutar la aplicación, es necesario configurar las siguientes propiedades en los
 archivos `msvc-invoice.yml`, `msvc-client.yml` y ,`msvc-activity.yml` dentro del microservicio de configuraciones en la
