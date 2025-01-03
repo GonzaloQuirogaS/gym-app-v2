@@ -1,19 +1,16 @@
 # Documentacion de Proyecto GYM V2
 
-
-
 El proyecto consiste en el desarrollo de una API con tecnología Java utilizando el framework de Spring con Springboot e implementando arquitectura de Microservicios con SpringCloud. 
 Este proyecto tiene como objetivo crear rutas e implementar acciones que permitan gestionar distintas operaciones y consultas a bases de datos.
+La API de gestión de gimnasio es una aplicación que permite la gestión de clientes, actividades y facturas. La API está diseñada para ser escalable y segura.
+
 ## Requisitos:
-
-
 
 - Java Development Kit (JDK): Versión 11 o superior.
 - Apache Maven: Versión 3.6 o superior.
 - MySQL: Versión 8 o superior.
+
 ## Tecnologias utilizadas
-
-
 
 - **Frameworks y librerías:**
    - Spring Boot: Framework para crear aplicaciones web y microservicios de manera rápida y sencilla.
@@ -96,12 +93,11 @@ spring:
 
 ## Ejecucion de proyecto
 
-
-
 ### Pasos para ejecutar el proyecto
 
     1. Clonar el repositorio del proyecto desde GitHub.
     2. Ejecutar el comando mvn clean install en el directorio raíz del proyecto.
+    3. Configurar y crear las bases de datos correspondientes (invoice, activity, client).
     3. Iniciar el microservicio de configuración (msvc-config).
     4. Iniciar el microservicio de registro (msvc-eureka).
     5. Iniciar el microservicio de puerta de enlace (msvc-gateway).
