@@ -1,6 +1,6 @@
 package com.microservice.client.service.serviceImpl;
 
-import com.microservice.client.client.FeingClient;
+import com.microservice.client.service.client.FeignClientService;
 import com.microservice.client.persistence.entity.Client;
 import com.microservice.client.persistence.repository.ClientRepository;
 import com.microservice.client.presentation.dto.client.ClientDto;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ClientServiceImpl implements IClientService {
 
     private final ClientRepository clientRepository;
-    private final FeingClient feingClient;
+    private final FeignClientService feignClient;
 
     @Override
     public List<ClientDto> findAll() {
@@ -150,7 +150,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public ClientDto setActivity(Long idClient, Long idActivity) {
         Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
-        ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
+        ActivityResponseDto activityResponseDto = feignClient.findActivityById(idActivity);
         if (activityResponseDto == null) {
             throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
@@ -174,7 +174,7 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto deleteActivity(Long idClient, Long idActivity) {
-        ActivityResponseDto activityResponseDto = feingClient.findActivityById(idActivity);
+        ActivityResponseDto activityResponseDto = feignClient.findActivityById(idActivity);
         if (activityResponseDto == null) {
             throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
