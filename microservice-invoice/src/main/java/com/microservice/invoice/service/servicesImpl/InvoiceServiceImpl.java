@@ -37,8 +37,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
                     .id(invoice.getId())
                     .number(invoice.getNumber())
                     .createdTime(invoice.getCreatedTime())
-                    .clientResponseDto(clientResponseDto)
-                    .activityResponseDto(activityResponseDto)
+                    .client(clientResponseDto)
+                    .activity(activityResponseDto)
                     .total(invoice.getTotal())
                     .build();
             invoiceDtos.add(invoiceDto);
@@ -68,8 +68,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
                 .id(invoice.getId())
                 .number(invoice.getNumber())
                 .createdTime(invoice.getCreatedTime())
-                .clientResponseDto(clientResponseDto)
-                .activityResponseDto(activityResponseDto)
+                .activity(activityResponseDto)
+                .client(clientResponseDto)
                 .total(activityResponseDto.getPrice())
                 .build();
     }
@@ -85,8 +85,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
                 .id(invoice.getId())
                 .number(invoice.getNumber())
                 .createdTime(invoice.getCreatedTime())
-                .clientResponseDto(clientResponseDto)
-                .activityResponseDto(activityResponseDto)
+                .client(clientResponseDto)
+                .activity(activityResponseDto)
                 .total(activityResponseDto.getPrice())
                 .build();
     }
@@ -100,8 +100,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
                 .id(invoice.getId())
                 .number(invoice.getNumber())
                 .createdTime(invoice.getCreatedTime())
-                .clientResponseDto(clientResponseDto)
-                .activityResponseDto(activityResponseDto)
+                .client(clientResponseDto)
+                .activity(activityResponseDto)
                 .total(activityResponseDto.getPrice())
                 .build();
     }

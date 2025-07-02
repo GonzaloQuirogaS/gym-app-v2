@@ -17,7 +17,7 @@ public class InvoiceDto {
     private Long id;
     private String number;
     private LocalDateTime createdTime;
-    private ActivityResponseDto activityResponseDto;
-    private ClientResponseDto clientResponseDto;
+    private ActivityResponseDto activity;
+    private ClientResponseDto client;
     private Integer total;
 }
