@@ -37,6 +37,7 @@ public class ClientServiceImpl implements IClientService {
                     .email(client.getEmail())
                     .phone(client.getPhone())
                     .registerDate(client.getRegisterDate())
+                    .idActivity(client.getActivityId())
                     .activityRegisterDate(client.getActivityRegisterDate())
                     .activityExpireDate(client.getActivityExpireDate())
                     .build();
@@ -128,6 +129,7 @@ public class ClientServiceImpl implements IClientService {
                     .email(client.getEmail())
                     .phone(client.getPhone())
                     .registerDate(client.getRegisterDate())
+                    .idActivity(client.getActivityId())
                     .activityRegisterDate(client.getActivityRegisterDate())
                     .activityExpireDate(client.getActivityExpireDate())
                     .build();
@@ -158,6 +160,7 @@ public class ClientServiceImpl implements IClientService {
                 .age(client.getAge())
                 .email(client.getEmail())
                 .phone(client.getPhone())
+                .idActivity(client.getActivityId())
                 .registerDate(client.getRegisterDate())
                 .activityRegisterDate(client.getActivityRegisterDate())
                 .activityExpireDate(client.getActivityExpireDate())
@@ -187,6 +190,7 @@ public class ClientServiceImpl implements IClientService {
                 .email(client.getEmail())
                 .phone(client.getPhone())
                 .registerDate(client.getRegisterDate())
+                .idActivity(client.getActivityId())
                 .activityRegisterDate(client.getActivityRegisterDate())
                 .activityExpireDate(client.getActivityExpireDate())
                 .build();
