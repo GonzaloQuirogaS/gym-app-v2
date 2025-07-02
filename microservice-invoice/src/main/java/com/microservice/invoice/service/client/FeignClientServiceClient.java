@@ -1,4 +1,4 @@
-package com.microservice.invoice.client;
+package com.microservice.invoice.service.client;
 
 import com.microservice.invoice.presentation.dto.client.ClientResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;

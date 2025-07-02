@@ -1,6 +1,5 @@
 package com.microservice.activity.service.servicesImpl;
 
-import com.microservice.activity.client.Client;
 import com.microservice.activity.persistence.entity.Activity;
 import com.microservice.activity.persistence.repository.ActivityRepository;
 import com.microservice.activity.presentation.dto.activity.ActivityDto;
@@ -8,6 +7,7 @@ import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 import com.microservice.activity.presentation.dto.client.ClientDto;
 import com.microservice.activity.presentation.exception.IdNotFoundException;
 import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
+import com.microservice.activity.service.client.FeignClientService;
 import com.microservice.activity.service.interfaces.IActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class ActivityServiceImpl implements IActivityService {
 
 
     private final ActivityRepository activityRepository;
-    private final Client client;
+    private final FeignClientService feignClient;
 
     @Override
     public List<ActivityDto> findAll() {
@@ -87,7 +87,7 @@ public class ActivityServiceImpl implements IActivityService {
     public ActivityByClientResponse findClientsByIdActivity(Long id) {
 
         Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
-        List<ClientDto> clientDtoList = client.findAllClientsByActivity(id);
+        List<ClientDto> clientDtoList = feignClient.findAllClientsByActivity(id);
         return ActivityByClientResponse.builder()
                 .id(activity.getId())
                 .name(activity.getName())

@@ -1,4 +1,4 @@
-package com.microservice.activity.client;
+package com.microservice.activity.service.client;
 
 import com.microservice.activity.presentation.dto.client.ClientDto;
 import org.springframework.cloud.openfeign.FeignClient;

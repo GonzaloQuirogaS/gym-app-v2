@@ -1,13 +1,13 @@
 package com.microservice.invoice.service.servicesImpl;
 
-import com.microservice.invoice.client.FeignClientActivity;
-import com.microservice.invoice.client.FeignClientClient;
 import com.microservice.invoice.persistence.entity.Invoice;
 import com.microservice.invoice.persistence.repository.InvoiceRepository;
 import com.microservice.invoice.presentation.dto.activity.ActivityResponseDto;
 import com.microservice.invoice.presentation.dto.client.ClientResponseDto;
 import com.microservice.invoice.presentation.dto.invoice.InvoiceDto;
 import com.microservice.invoice.presentation.exception.IdNotFoundException;
+import com.microservice.invoice.service.client.FeignClientServiceActivity;
+import com.microservice.invoice.service.client.FeignClientServiceClient;
 import com.microservice.invoice.service.interfaces.IInvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     private final InvoiceRepository invoiceRepository;
 
-    private final FeignClientClient feignClient;
+    private final FeignClientServiceClient feignClient;
 
-    private final FeignClientActivity feignActivity;
+    private final FeignClientServiceActivity feignActivity;
 
     @Override
     public List<InvoiceDto> findAll() {
