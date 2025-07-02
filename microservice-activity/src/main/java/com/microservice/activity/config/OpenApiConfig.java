@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
                 title = "Gym management",
                 version = "2.0.0",
                 description = "Gym management application, activity service"
-
         ),
         servers = {
                 @Server(url = "http://localhost:9090"),

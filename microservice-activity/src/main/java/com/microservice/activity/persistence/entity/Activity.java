@@ -15,19 +15,14 @@ import lombok.*;
 @Getter
 @Setter
 public class Activity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     @Size(min = 3)
     private String name;
-
     @NotNull
     private Integer price;
-
     @Column(name = "client_id")
     private Long clientId;
-
-
 }

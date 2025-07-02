@@ -22,9 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ActivityController {
-
     private final IActivityService activityService;
-
     private final Utils utils;
 
     @Tag(name = "GET", description = "Get methods")

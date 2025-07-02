@@ -20,5 +20,4 @@ public class ClientDto {
     private Long phone;
     private LocalDateTime registerDate = LocalDateTime.now();
     private Long activityId;
-
 }

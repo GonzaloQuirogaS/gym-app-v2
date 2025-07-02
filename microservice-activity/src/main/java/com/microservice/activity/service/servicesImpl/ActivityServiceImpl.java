@@ -20,8 +20,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ActivityServiceImpl implements IActivityService {
-
-
     private final ActivityRepository activityRepository;
     private final FeignClientService feignClient;
 
@@ -29,7 +27,6 @@ public class ActivityServiceImpl implements IActivityService {
     public List<ActivityDto> findAll() {
         List<Activity> activities = activityRepository.findAll();
         List<ActivityDto> activityDtos = new ArrayList<>();
-
         for (Activity activity : activities) {
             ActivityDto activityDto = ActivityDto.builder()
                     .id(activity.getId())
@@ -47,7 +44,6 @@ public class ActivityServiceImpl implements IActivityService {
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         activityRepository.save(activity);
-
         return ActivityDto.builder()
                 .id(activity.getId())
                 .name(activity.getName())
@@ -58,7 +54,6 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public ActivityDto findById(Long id) {
         Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
-
         return ActivityDto.builder()
                 .id(activity.getId())
                 .name(activity.getName())
@@ -85,7 +80,6 @@ public class ActivityServiceImpl implements IActivityService {
 
     @Override
     public ActivityByClientResponse findClientsByIdActivity(Long id) {
-
         Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
         List<ClientDto> clientDtoList = feignClient.findAllClientsByActivity(id);
         return ActivityByClientResponse.builder()
