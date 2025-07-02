@@ -22,11 +22,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class InvoiceServiceImpl implements IInvoiceService {
-
     private final InvoiceRepository invoiceRepository;
-
     private final FeignClientServiceClient feignClient;
-
     private final FeignClientServiceActivity feignActivity;
 
     @Override
@@ -36,7 +33,6 @@ public class InvoiceServiceImpl implements IInvoiceService {
         for (Invoice invoice : invoices) {
             ClientResponseDto clientResponseDto = feignClient.findClientById(invoice.getIdClient());
             ActivityResponseDto activityResponseDto = feignActivity.findActivityById(invoice.getIdActivity());
-
             InvoiceDto invoiceDto = InvoiceDto.builder()
                     .id(invoice.getId())
                     .number(invoice.getNumber())
@@ -45,12 +41,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
                     .activityResponseDto(activityResponseDto)
                     .total(invoice.getTotal())
                     .build();
-
             invoiceDtos.add(invoiceDto);
         }
         return invoiceDtos;
     }
-
 
     @Override
     public InvoiceDto save(Long idClient) {
@@ -60,7 +54,6 @@ public class InvoiceServiceImpl implements IInvoiceService {
             throw new IdNotFoundException(CLIENT_NOT_REGISTERED);
         }
         ActivityResponseDto activityResponseDto = feignActivity.findActivityById(clientResponseDto.getIdActivity());
-
         UUID randomUUID = UUID.randomUUID();
 
         Invoice invoice = new Invoice();

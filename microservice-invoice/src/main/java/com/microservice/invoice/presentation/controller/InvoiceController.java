@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class InvoiceController {
-
     private final IInvoiceService invoiceService;
 
     @Tag(name = "GET", description = "Get methods")
@@ -54,5 +53,4 @@ public class InvoiceController {
         invoiceService.deleteById(id);
         return ResponseEntity.ok(invoiceDto);
     }
-
 }
