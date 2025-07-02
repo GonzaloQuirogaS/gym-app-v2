@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "msvc-activity",url = "localhost:9090/api/v2/activities")
-public interface FeignClientActivity {
-
+public interface FeignClientServiceActivity {
     @GetMapping("/{id}")
     ActivityResponseDto findActivityById(@PathVariable Long id);
 }
