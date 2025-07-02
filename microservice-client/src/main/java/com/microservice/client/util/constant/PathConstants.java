@@ -1,7 +1,6 @@
 package com.microservice.client.util.constant;
 
 public class PathConstants {
-
     public static final String API_V2_CLIENTS = "/api/v2/clients";
     public static final String SAVE = "/save";
     public static final String GET_BY_ID = "/{id}";

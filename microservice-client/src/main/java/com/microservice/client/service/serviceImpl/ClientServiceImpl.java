@@ -21,7 +21,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements IClientService {
-
     private final ClientRepository clientRepository;
     private final FeignClientService feignClient;
 
@@ -29,7 +28,6 @@ public class ClientServiceImpl implements IClientService {
     public List<ClientDto> findAll() {
         List<Client> clients = clientRepository.findAll();
         List<ClientDto> clientDtos = new ArrayList<>();
-
         for (Client client : clients) {
             ClientDto clientDto = ClientDto.builder()
                     .id(client.getId())
@@ -71,20 +69,17 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto updateById(Long id, ClientRequestDto clientRequestDto) {
-
         Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
 
         if (client.getActivityId() == null) {
             client.setActivityId(null);
         }
-
         client.setName(clientRequestDto.getName());
         client.setSurname(clientRequestDto.getSurname());
         client.setAge(clientRequestDto.getAge());
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
         clientRepository.save(client);
-
         return ClientDto.builder()
                 .id(client.getId())
                 .name(client.getName())
@@ -117,7 +112,6 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public void deleteById(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
         clientRepository.deleteById(id);
     }
 
@@ -139,11 +133,9 @@ public class ClientServiceImpl implements IClientService {
                     .build();
             clientDtos.add(clientDto);
         }
-
         if (clientDtos.isEmpty()) {
             throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
-
         return clientDtos;
     }
 

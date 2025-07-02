@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import static com.microservice.client.util.constant.PathConstants.*;
+import static com.microservice.client.util.constant.SuccessConstant.*;
+
 
 import java.util.List;
 
@@ -21,9 +23,7 @@ import java.util.List;
 @RequestMapping(API_V2_CLIENTS)
 @CrossOrigin("*")
 public class ClientController {
-
     private final Utils utils;
-
     private final IClientService clientService;
 
     @Tag(name = "GET", description = "Get methods")
@@ -71,7 +71,7 @@ public class ClientController {
     private ResponseEntity<?> delete(@PathVariable Long id) {
         ClientDto clientDto = clientService.findById(id);
         clientService.deleteById(id);
-        return ResponseEntity.ok("Eliminado con exito!");
+        return ResponseEntity.ok(CLIENT_DELETED + clientDto);
     }
 
     @Tag(name = "GET")

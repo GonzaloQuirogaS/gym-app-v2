@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ClientDto {
-
     private Long id;
     private String name;
     private String surname;
@@ -23,5 +22,4 @@ public class ClientDto {
     private LocalDateTime registerDate = LocalDateTime.now();
     private LocalDateTime activityRegisterDate;
     private LocalDateTime activityExpireDate;
-
 }
