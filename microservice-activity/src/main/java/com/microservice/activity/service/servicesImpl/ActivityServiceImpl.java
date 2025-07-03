@@ -9,12 +9,12 @@ import com.microservice.activity.presentation.exception.IdNotFoundException;
 import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
 import com.microservice.activity.service.client.FeignClientService;
 import com.microservice.activity.service.interfaces.IActivityService;
+import com.microservice.activity.util.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.microservice.activity.util.constant.ErrorConstants.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,20 +22,13 @@ import java.util.List;
 public class ActivityServiceImpl implements IActivityService {
     private final ActivityRepository activityRepository;
     private final FeignClientService feignClient;
+    private final Utils utils;
 
     @Override
     public List<ActivityDto> findAll() {
-        List<Activity> activities = activityRepository.findAll();
-        List<ActivityDto> activityDtos = new ArrayList<>();
-        for (Activity activity : activities) {
-            ActivityDto activityDto = ActivityDto.builder()
-                    .id(activity.getId())
-                    .name(activity.getName())
-                    .price(activity.getPrice())
-                    .build();
-            activityDtos.add(activityDto);
-        }
-        return activityDtos;
+            return activityRepository.findAll().stream()
+                    .map(utils::mapToDto)
+                    .toList();
     }
 
     @Override
@@ -44,43 +37,37 @@ public class ActivityServiceImpl implements IActivityService {
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         activityRepository.save(activity);
-        return ActivityDto.builder()
-                .id(activity.getId())
-                .name(activity.getName())
-                .price(activity.getPrice())
-                .build();
+        return utils.mapToDto(activity);
     }
 
     @Override
     public ActivityDto findById(Long id) {
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
-        return ActivityDto.builder()
-                .id(activity.getId())
-                .name(activity.getName())
-                .price(activity.getPrice()).build();
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
+        return utils.mapToDto(activity);
     }
 
     @Override
     public void deleteById(Long id) {
-        activityRepository.deleteById(id);
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
+        activityRepository.delete(activity);
     }
 
     @Override
     public ActivityDto update(Long id, ActivityRequestDto activityRequestDto) {
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
         activity.setName(activityRequestDto.getName());
         activity.setPrice(activityRequestDto.getPrice());
         activityRepository.save(activity);
-        return ActivityDto.builder()
-                .id(activity.getId())
-                .name(activity.getName())
-                .price(activity.getPrice())
-                .build();
+        return utils.mapToDto(activity);
     }
 
     @Override
     public ActivityByClientResponse findClientsByIdActivity(Long id) {
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
         List<ClientDto> clientDtoList = feignClient.findAllClientsByActivity(id);
         return ActivityByClientResponse.builder()
                 .id(activity.getId())
