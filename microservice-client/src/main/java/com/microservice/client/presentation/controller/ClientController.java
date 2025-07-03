@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,9 @@ public class ClientController {
     @Operation(summary = "Save client",
             description = "Save client")
     @PostMapping(SAVE)
-    public ResponseEntity<?> save(@Valid @RequestBody ClientRequestDto clientRequestDto, BindingResult result) {
-        if (result.hasFieldErrors()) {
-            return utils.validation(result);
-        }
+    public ResponseEntity<ClientDto> save(@Valid @RequestBody ClientRequestDto clientRequestDto) {
         ClientDto clientDto = clientService.save(clientRequestDto);
-        return ResponseEntity.ok(clientDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientDto);
     }
 
     @Tag(name = "GET")
@@ -59,7 +57,7 @@ public class ClientController {
     @Tag(name = "PUT")
     @Operation(summary = "Update client", description = "Update client")
     @PutMapping(UPDATE)
-    private ResponseEntity<ClientDto> update(@PathVariable Long id, @RequestBody ClientRequestDto clientRequestDto) {
+    public ResponseEntity<ClientDto> update(@PathVariable Long id, @RequestBody ClientRequestDto clientRequestDto) {
         ClientDto clientDto = clientService.updateById(id, clientRequestDto);
         return ResponseEntity.ok(clientDto);
     }
@@ -68,10 +66,9 @@ public class ClientController {
     @Operation(summary = "Delete client by ID",
             description = "Delete client by ID")
     @DeleteMapping(DELETE)
-    private ResponseEntity<?> delete(@PathVariable Long id) {
-        ClientDto clientDto = clientService.findById(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         clientService.deleteById(id);
-        return ResponseEntity.ok(CLIENT_DELETED + clientDto);
+        return ResponseEntity.noContent().build();
     }
 
     @Tag(name = "GET")
