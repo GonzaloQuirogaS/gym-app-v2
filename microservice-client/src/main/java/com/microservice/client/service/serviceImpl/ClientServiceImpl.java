@@ -9,13 +9,13 @@ import com.microservice.client.presentation.dto.activity.ActivityResponseDto;
 import com.microservice.client.presentation.exception.ActivityNotFoundException;
 import com.microservice.client.presentation.exception.IdNotFoundException;
 import com.microservice.client.service.interfaces.IClientService;
+import com.microservice.client.util.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.microservice.client.util.constant.ErrorConstants.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,27 +23,13 @@ import java.util.List;
 public class ClientServiceImpl implements IClientService {
     private final ClientRepository clientRepository;
     private final FeignClientService feignClient;
+    private final Utils utils;
 
     @Override
     public List<ClientDto> findAll() {
-        List<Client> clients = clientRepository.findAll();
-        List<ClientDto> clientDtos = new ArrayList<>();
-        for (Client client : clients) {
-            ClientDto clientDto = ClientDto.builder()
-                    .id(client.getId())
-                    .name(client.getName())
-                    .surname(client.getSurname())
-                    .age(client.getAge())
-                    .email(client.getEmail())
-                    .phone(client.getPhone())
-                    .registerDate(client.getRegisterDate())
-                    .idActivity(client.getActivityId())
-                    .activityRegisterDate(client.getActivityRegisterDate())
-                    .activityExpireDate(client.getActivityExpireDate())
-                    .build();
-            clientDtos.add(clientDto);
-        }
-        return clientDtos;
+        return clientRepository.findAll().stream()
+                .map(utils::mapToDto)
+                .toList();
     }
 
     @Override
@@ -55,86 +41,40 @@ public class ClientServiceImpl implements IClientService {
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
         clientRepository.save(client);
-        return ClientDto.builder()
-                .id(client.getId())
-                .name(client.getName())
-                .surname(client.getSurname())
-                .age(client.getAge())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .registerDate(client.getRegisterDate())
-                .activityRegisterDate(client.getActivityRegisterDate())
-                .activityExpireDate(client.getActivityExpireDate())
-                .build();
+        return utils.mapToDto(client);
     }
 
     @Override
     public ClientDto updateById(Long id, ClientRequestDto clientRequestDto) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
-
-        if (client.getActivityId() == null) {
-            client.setActivityId(null);
-        }
         client.setName(clientRequestDto.getName());
         client.setSurname(clientRequestDto.getSurname());
         client.setAge(clientRequestDto.getAge());
         client.setPhone(clientRequestDto.getPhone());
         client.setEmail(clientRequestDto.getEmail());
         clientRepository.save(client);
-        return ClientDto.builder()
-                .id(client.getId())
-                .name(client.getName())
-                .surname(client.getSurname())
-                .age(client.getAge())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .registerDate(client.getRegisterDate())
-                .activityRegisterDate(client.getActivityRegisterDate())
-                .activityExpireDate(client.getActivityExpireDate())
-                .build();
+        return utils.mapToDto(client);
     }
 
     @Override
     public ClientDto findById(Long id) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
-        return ClientDto.builder()
-                .id(client.getId())
-                .name(client.getName())
-                .surname(client.getSurname())
-                .age(client.getAge())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .registerDate(client.getRegisterDate())
-                .idActivity(client.getActivityId())
-                .activityRegisterDate(client.getActivityRegisterDate())
-                .activityExpireDate(client.getActivityExpireDate())
-                .build();
+        return utils.mapToDto(client);
     }
 
     @Override
     public void deleteById(Long id) {
-        clientRepository.deleteById(id);
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
+        clientRepository.delete(client);
     }
 
     @Override
     public List<ClientDto> findByIdActivity(Long id) {
         List<Client> clients = clientRepository.findAllByActivityId(id);
-        List<ClientDto> clientDtos = new ArrayList<>();
-        for (Client client : clients) {
-            ClientDto clientDto = ClientDto.builder()
-                    .id(client.getId())
-                    .name(client.getName())
-                    .surname(client.getSurname())
-                    .age(client.getAge())
-                    .email(client.getEmail())
-                    .phone(client.getPhone())
-                    .registerDate(client.getRegisterDate())
-                    .idActivity(client.getActivityId())
-                    .activityRegisterDate(client.getActivityRegisterDate())
-                    .activityExpireDate(client.getActivityExpireDate())
-                    .build();
-            clientDtos.add(clientDto);
-        }
+        List<ClientDto> clientDtos = clients.stream()
+                .map(utils::mapToDto)
+                .toList();
         if (clientDtos.isEmpty()) {
             throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
@@ -152,19 +92,7 @@ public class ClientServiceImpl implements IClientService {
         client.setActivityExpireDate(LocalDateTime.now().plusMonths(1));
         client.setActivityId(idActivity);
         clientRepository.save(client);
-
-        return ClientDto.builder()
-                .id(client.getId())
-                .name(client.getName())
-                .surname(client.getSurname())
-                .age(client.getAge())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .idActivity(client.getActivityId())
-                .registerDate(client.getRegisterDate())
-                .activityRegisterDate(client.getActivityRegisterDate())
-                .activityExpireDate(client.getActivityExpireDate())
-                .build();
+        return utils.mapToDto(client);
     }
 
     @Override
@@ -181,18 +109,6 @@ public class ClientServiceImpl implements IClientService {
         client.setActivityRegisterDate(null);
         client.setActivityId(null);
         clientRepository.save(client);
-
-        return ClientDto.builder()
-                .id(client.getId())
-                .name(client.getName())
-                .surname(client.getSurname())
-                .age(client.getAge())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .registerDate(client.getRegisterDate())
-                .idActivity(client.getActivityId())
-                .activityRegisterDate(client.getActivityRegisterDate())
-                .activityExpireDate(client.getActivityExpireDate())
-                .build();
+        return utils.mapToDto(client);
     }
 }
