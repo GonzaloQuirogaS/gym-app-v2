@@ -73,7 +73,7 @@ public class ActivityServiceImpl implements IActivityService {
                 .id(activity.getId())
                 .name(activity.getName())
                 .price(activity.getPrice())
-                .clientDtoList(clientDtoList)
+                .clients(clientDtoList)
                 .build();
     }
 }

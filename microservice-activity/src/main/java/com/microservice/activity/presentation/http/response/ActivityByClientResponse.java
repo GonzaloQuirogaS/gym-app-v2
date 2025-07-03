@@ -16,5 +16,5 @@ public class ActivityByClientResponse {
     private Long id;
     private String name;
     private Integer price;
-    private List<ClientDto> clientDtoList;
+    private List<ClientDto> clients;
 }
