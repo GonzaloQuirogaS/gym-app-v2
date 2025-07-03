@@ -4,13 +4,12 @@ import com.microservice.activity.presentation.dto.activity.ActivityDto;
 import com.microservice.activity.presentation.dto.activity.ActivityRequestDto;
 import com.microservice.activity.presentation.http.response.ActivityByClientResponse;
 import com.microservice.activity.service.interfaces.IActivityService;
-import com.microservice.activity.util.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import static com.microservice.activity.util.constant.PathConstants.*;
@@ -23,13 +22,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class ActivityController {
     private final IActivityService activityService;
-    private final Utils utils;
 
     @Tag(name = "GET", description = "Get methods")
     @Operation(summary = "Get all activities",
             description = "Get all activities")
     @GetMapping
-    private ResponseEntity<List<ActivityDto>> findAll() {
+    public ResponseEntity<List<ActivityDto>> findAll() {
         return ResponseEntity.ok(activityService.findAll());
     }
 
@@ -37,14 +35,14 @@ public class ActivityController {
     @Tag(name = "GET")
     @Operation(summary = "Get activity by ID",
             description = "Get activity by ID")
-    ResponseEntity<ActivityDto> findDisciplineById(@PathVariable Long id) {
+    public ResponseEntity<ActivityDto> findDisciplineById(@PathVariable Long id) {
         return ResponseEntity.ok(activityService.findById(id));
     }
 
     @PutMapping(UPDATE)
     @Tag(name = "PUT")
     @Operation(summary = "Update activity", description = "Update activity")
-    private ResponseEntity<ActivityDto> update(@PathVariable Long id, @RequestBody ActivityRequestDto activityRequestDto) {
+    public ResponseEntity<ActivityDto> update(@PathVariable Long id, @RequestBody ActivityRequestDto activityRequestDto) {
         return ResponseEntity.ok(activityService.update(id, activityRequestDto));
     }
 
@@ -52,21 +50,18 @@ public class ActivityController {
     @Tag(name = "POST", description = "Post Methods")
     @Operation(summary = "Save activity",
             description = "Save activity")
-    private ResponseEntity<?> save(@Valid @RequestBody ActivityRequestDto activityRequestDto, BindingResult result) {
-        if (result.hasFieldErrors()) {
-            return utils.validation(result);
-        }
-        return ResponseEntity.ok(activityService.save(activityRequestDto));
+    public ResponseEntity<ActivityDto> save(@Valid @RequestBody ActivityRequestDto activityRequestDto) {
+        ActivityDto saved = activityService.save(activityRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @DeleteMapping(DELETE)
     @Tag(name = "DELETE")
     @Operation(summary = "Delete activity by ID",
             description = "Delete activity by ID")
-    private ResponseEntity<ActivityDto> delete(@PathVariable Long id) {
-        ActivityDto activityDto = activityService.findById(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         activityService.deleteById(id);
-        return ResponseEntity.ok(activityDto);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(SEARCH_CLIENT_BY_ID)
