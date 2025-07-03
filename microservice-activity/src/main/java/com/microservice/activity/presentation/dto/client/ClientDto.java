@@ -19,5 +19,4 @@ public class ClientDto {
     private String email;
     private Long phone;
     private LocalDateTime registerDate = LocalDateTime.now();
-    private Long activityId;
 }
