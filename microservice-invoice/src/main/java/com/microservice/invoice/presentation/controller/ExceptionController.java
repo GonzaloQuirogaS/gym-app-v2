@@ -14,17 +14,19 @@ import java.util.Map;
 @RestControllerAdvice(basePackages = {"com.microservice.invoice.presentation.controller"})
 public class ExceptionController {
 
-    @ExceptionHandler(value = {IdNotFoundException.class})
-    public ResponseEntity<Object> handlerIdNotFoundException(IdNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(e.getErrorMessage());
+    @ExceptionHandler(IdNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlerIdNotFoundException(IdNotFoundException e) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "IdNotFoundException");
+        body.put("message", e.getErrorMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
-    @ExceptionHandler(value = {Exception.class})
-    public ResponseEntity<Object> handlerException(Exception e) {
-        Map<String, String> map = new HashMap<>();
-        map.put("error: ", e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(map);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handlerException(Exception e) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "InternalServerError");
+        body.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 }

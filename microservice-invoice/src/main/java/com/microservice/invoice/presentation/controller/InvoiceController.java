@@ -32,7 +32,7 @@ public class InvoiceController {
     @Operation(summary = "Get invoice by ID",
             description = "Get invoice by ID")
     @GetMapping(GET_BY_ID)
-    ResponseEntity<InvoiceDto> findInvoiceById(@PathVariable Long id) {
+    public ResponseEntity<InvoiceDto> findInvoiceById(@PathVariable Long id) {
         return ResponseEntity.ok(invoiceService.findById(id));
     }
 
@@ -40,7 +40,7 @@ public class InvoiceController {
     @Operation(summary = "Save invoice",
             description = "Save invoice")
     @PostMapping(SAVE)
-    private ResponseEntity<InvoiceDto> save(@PathVariable Long idClient) {
+    public ResponseEntity<InvoiceDto> save(@RequestParam Long idClient) {
         return ResponseEntity.ok(invoiceService.save(idClient));
     }
 
@@ -48,9 +48,8 @@ public class InvoiceController {
     @Operation(summary = "Delete invoice by ID",
             description = "Delete invoice by ID")
     @DeleteMapping(DELETE)
-    private ResponseEntity<InvoiceDto> delete(@PathVariable Long id) {
-        InvoiceDto invoiceDto = invoiceService.findById(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         invoiceService.deleteById(id);
-        return ResponseEntity.ok(invoiceDto);
+        return ResponseEntity.noContent().build();
     }
 }
