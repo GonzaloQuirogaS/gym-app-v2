@@ -67,7 +67,7 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public ActivityByClientResponse findClientsByIdActivity(Long id) {
         Activity activity = activityRepository.findById(id)
-                .orElseThrow(() -> new IdNotFoundException(ACTIVITY_NOT_FOUND));
+                .orElseThrow(() -> new IdNotFoundException("Actividad o cliente no encontrado"));
         List<ClientDto> clientDtoList = feignClient.findAllClientsByActivity(id);
         return ActivityByClientResponse.builder()
                 .id(activity.getId())
