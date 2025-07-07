@@ -10,6 +10,7 @@ import com.microservice.invoice.service.client.FeignClientServiceActivity;
 import com.microservice.invoice.service.client.FeignClientServiceClient;
 import com.microservice.invoice.service.interfaces.IInvoiceService;
 import com.microservice.invoice.util.Utils;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,11 +42,13 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Override
     public InvoiceDto save(Long idClient) {
-        ClientResponseDto client = feignClient.findClientById(idClient);
-
-        if (client.getIdActivity() == null) {
+        ClientResponseDto client;
+        try {
+            client = feignClient.findClientById(idClient);
+        } catch (FeignException.NotFound e) {
             throw new IdNotFoundException(CLIENT_NOT_REGISTERED);
         }
+
         ActivityResponseDto activity = feignActivity.findActivityById(client.getIdActivity());
         UUID randomUUID = UUID.randomUUID();
 
