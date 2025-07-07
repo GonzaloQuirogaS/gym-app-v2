@@ -10,6 +10,7 @@ import com.microservice.client.presentation.exception.ActivityNotFoundException;
 import com.microservice.client.presentation.exception.IdNotFoundException;
 import com.microservice.client.service.interfaces.IClientService;
 import com.microservice.client.util.Utils;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -84,8 +85,9 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public ClientDto setActivity(Long idClient, Long idActivity) {
         Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
-        ActivityResponseDto activityResponseDto = feignClient.findActivityById(idActivity);
-        if (activityResponseDto == null) {
+        try {
+            ActivityResponseDto  activityResponseDto = feignClient.findActivityById(idActivity);
+        } catch (FeignException.NotFound e) {
             throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
         client.setActivityRegisterDate(LocalDateTime.now());
@@ -97,8 +99,9 @@ public class ClientServiceImpl implements IClientService {
 
     @Override
     public ClientDto deleteActivity(Long idClient, Long idActivity) {
-        ActivityResponseDto activityResponseDto = feignClient.findActivityById(idActivity);
-        if (activityResponseDto == null) {
+        try {
+            ActivityResponseDto  activityResponseDto = feignClient.findActivityById(idActivity);
+        } catch (FeignException.NotFound e) {
             throw new ActivityNotFoundException(ACTIVITY_NOT_FOUND);
         }
         Client client = clientRepository.findById(idClient).orElseThrow(() -> new IdNotFoundException(CLIENT_NOT_FOUND));
